@@ -78,11 +78,13 @@ func JSON(c *http200ok.Context, v interface{}) error {
 	return json.NewEncoder(c.Response).Encode(v)
 }
 
-func JSONError(c *http200ok.Context, code int, err interface{}) error {
+func JSONError(c *http200ok.Context, code int, format string, a ...interface{}) error {
 
 	c.Response.Header().Add("Content-Type", "application/json")
 	c.Response.Header().Set("X-Content-Type-Options", "nosniff")
 	c.Response.WriteHeader(code)
+
+	log.Error(fmt.Sprintf(format, a...))
 
 	return json.NewEncoder(c.Response).Encode(struct {
 		Success bool        `json:"success"`
@@ -91,6 +93,6 @@ func JSONError(c *http200ok.Context, code int, err interface{}) error {
 	}{
 		Success: false,
 		Code:    code,
-		Error:   err,
+		Error:   fmt.Sprintf(format, a...),
 	})
 }

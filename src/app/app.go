@@ -50,5 +50,5 @@ func (app *app) route() {
 
 func (app *app) Run() {
 
-	http.ListenAndServe(app.address, app)
+	log.Fatal(http.ListenAndServe(app.address, app))
 }

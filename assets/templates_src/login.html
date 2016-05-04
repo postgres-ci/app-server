@@ -5,6 +5,15 @@
 </head>
 <body>
 
-{% verbatim %}{{ error }}{% endverbatim %}
+{% verbatim %}
+
+{{ error }}
+<form method="post">
+	login: <input type="text" name="login"><br>
+	password: <input type="password" name="password"><br>
+	<input type="submit">
+</form>
+
+{% endverbatim %}
 </body>
 </html>
