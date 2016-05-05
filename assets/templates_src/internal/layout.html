@@ -4,7 +4,10 @@
 	<title></title>
 </head>
 <body>
+
 	{% verbatim %}{{ CurrentUser.Name }} (ID: {{ CurrentUser.ID }}){% endverbatim %}
+
+	<a href="/logout/">logout</a>
 
 	{% block content%}{% endblock %}
 </body>

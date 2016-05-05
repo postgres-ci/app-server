@@ -68,3 +68,8 @@ func Login(login, password string) (string, error) {
 
 	return sessionID, nil
 }
+
+func Logout(sessionID string) {
+
+	env.Connect().Exec("SELECT auth.logout($1)", sessionID)
+}

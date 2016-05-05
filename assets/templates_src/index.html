@@ -1,5 +1,55 @@
 {% extends "internal/layout.html" %}
 
 {% block content%}
-Content
+
+{% verbatim %}
+	
+	total: {{ total }}
+
+	<table>
+		<thead>
+			<tr>
+				<td>
+					build_id
+				</td>
+				<td>
+					project_name branch commit_sha
+				</td>
+				<td>
+					status
+				</td>
+				<td>
+					created_at
+					started_at
+					finished_at
+				</td>
+			</tr>
+		</thead>
+
+		<tbody>
+			{% for item in items %}
+			<tr>
+				<td>
+					{{ item.BuildID }}
+				</td>
+				<td>
+				<a href="/projects/{{ item.ProjectID }}/">{{ item.ProjectName }}</a>
+				{{ item.Branch }}
+				<a href="/projects/{{ item.ProjectID }}/builds/{{ item.BuildID }}/">{{ item.CommitSHA }}</a>
+				</td>
+				<td>
+					{{ item.Status }}
+				</td>
+				<td>
+				{{ item.CreatedAt }}
+				{{ item.StartedAt }}
+				{{ item.FinishedAt }}
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+{% endverbatim %}
+
 {% endblock %}

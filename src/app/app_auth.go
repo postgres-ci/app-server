@@ -12,44 +12,59 @@ import (
 
 func (app *app) auth() {
 
-	app.Get("/login/", loginHandler)
 	app.Post("/login/", loginHandler)
-}
 
-func loginHandler(c *http200ok.Context) {
+	app.Get("/login/", func(c *http200ok.Context) {
 
-	if c.Request.Method == "POST" {
+		render.HTML(c, "login.html", nil)
+	})
 
-		var (
-			login    = c.Request.PostFormValue("login")
-			password = c.Request.PostFormValue("password")
-		)
+	app.Get("/logout/", func(c *http200ok.Context) {
 
-		sessioID, err := auth.Login(login, password)
+		if cookie, err := c.Request.Cookie(auth.CookieName); err == nil {
 
-		log.Debugf("login: %s, password: %s -> %s, %v", login, password, sessioID, err)
-
-		if err != nil {
-
-			render.HTML(c, "login.html", render.Context{
-
-				"error": err.Error(),
-			})
-
-			return
+			auth.Logout(cookie.Value)
 		}
 
 		http.SetCookie(c.Response, &http.Cookie{
 			Name:     auth.CookieName,
-			Value:    sessioID,
+			Value:    "",
 			Path:     "/",
+			MaxAge:   -1,
 			HttpOnly: true,
 		})
 
 		tools.Redirect(c, "/")
+	})
+}
+
+func loginHandler(c *http200ok.Context) {
+
+	var (
+		login    = c.Request.PostFormValue("login")
+		password = c.Request.PostFormValue("password")
+	)
+
+	sessioID, err := auth.Login(login, password)
+
+	log.Debugf("login: %s, password: %s -> %s, %v", login, password, sessioID, err)
+
+	if err != nil {
+
+		render.HTML(c, "login.html", render.Context{
+
+			"error": err.Error(),
+		})
 
 		return
 	}
 
-	render.HTML(c, "login.html", nil)
+	http.SetCookie(c.Response, &http.Cookie{
+		Name:     auth.CookieName,
+		Value:    sessioID,
+		Path:     "/",
+		HttpOnly: true,
+	})
+
+	tools.Redirect(c, "/")
 }
