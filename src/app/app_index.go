@@ -18,6 +18,10 @@ func (app *app) index() {
 				"total": total,
 				"items": items,
 			})
+
+			return
 		}
+
+		render.HTML(c, "index.html", nil)
 	})
 }
