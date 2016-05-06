@@ -4,9 +4,9 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
+	"github.com/postgres-ci/app-server/src/app/middleware"
 	"github.com/postgres-ci/app-server/src/common"
 	"github.com/postgres-ci/app-server/src/env"
-	"github.com/postgres-ci/app-server/src/middleware"
 	"github.com/postgres-ci/http200ok"
 
 	"net/http"
@@ -41,14 +41,7 @@ type app struct {
 	address string
 }
 
-func (app *app) route() {
-
-	app.auth()
-	app.index()
-	app.webhooks()
-}
-
 func (app *app) Run() {
 
-	log.Fatal(http.ListenAndServe(app.address, app))
+	log.Fatal(http.ListenAndServe(app.address, app.Server))
 }

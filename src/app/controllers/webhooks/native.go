@@ -1,7 +1,7 @@
-package app
+package webhooks
 
 import (
-	"github.com/postgres-ci/app-server/src/app/webhooks"
+	"github.com/postgres-ci/app-server/src/app/models/webhooks"
 	"github.com/postgres-ci/app-server/src/tools/render"
 	"github.com/postgres-ci/hooks/git"
 	"github.com/postgres-ci/http200ok"
@@ -10,17 +10,7 @@ import (
 	"net/http"
 )
 
-func (app *app) webhooks() {
-
-	app.Post("/webhooks/native/", webhooksNativeHandler)
-
-	app.Post("/webhooks/github/", func(c *http200ok.Context) {
-
-		render.JSON(c, "Webhooks github!")
-	})
-}
-
-func webhooksNativeHandler(c *http200ok.Context) {
+func nativeHandler(c *http200ok.Context) {
 
 	token := c.Request.Header.Get("X-Token")
 
@@ -88,5 +78,4 @@ func webhooksNativeHandler(c *http200ok.Context) {
 
 		render.JSONError(c, http.StatusBadRequest, "Unreachable X-Event: %s", event)
 	}
-
 }

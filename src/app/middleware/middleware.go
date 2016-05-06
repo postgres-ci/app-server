@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/postgres-ci/app-server/src/app/auth"
+	"github.com/postgres-ci/app-server/src/app/models/auth"
 	"github.com/postgres-ci/app-server/src/tools"
 	"github.com/postgres-ci/http200ok"
 

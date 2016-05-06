@@ -1,8 +1,8 @@
-package app
+package auth
 
 import (
 	log "github.com/Sirupsen/logrus"
-	"github.com/postgres-ci/app-server/src/app/auth"
+	"github.com/postgres-ci/app-server/src/app/models/auth"
 	"github.com/postgres-ci/app-server/src/tools"
 	"github.com/postgres-ci/app-server/src/tools/render"
 	"github.com/postgres-ci/http200ok"
@@ -10,16 +10,16 @@ import (
 	"net/http"
 )
 
-func (app *app) auth() {
+func Route(server *http200ok.Server) {
 
-	app.Post("/login/", loginHandler)
+	server.Post("/login/", loginHandler)
 
-	app.Get("/login/", func(c *http200ok.Context) {
+	server.Get("/login/", func(c *http200ok.Context) {
 
 		render.HTML(c, "login.html", nil)
 	})
 
-	app.Get("/logout/", func(c *http200ok.Context) {
+	server.Get("/logout/", func(c *http200ok.Context) {
 
 		if cookie, err := c.Request.Cookie(auth.CookieName); err == nil {
 

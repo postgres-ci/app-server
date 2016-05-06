@@ -1,14 +1,14 @@
-package app
+package controllers
 
 import (
-	"github.com/postgres-ci/app-server/src/app/build"
+	"github.com/postgres-ci/app-server/src/app/models/build"
 	"github.com/postgres-ci/app-server/src/tools/render"
 	"github.com/postgres-ci/http200ok"
 )
 
-func (app *app) index() {
+func Index(server *http200ok.Server) {
 
-	app.Get("/", func(c *http200ok.Context) {
+	server.Get("/", func(c *http200ok.Context) {
 
 		total, items, err := build.List(1, 0, 20, 0)
 
