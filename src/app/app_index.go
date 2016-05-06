@@ -10,7 +10,7 @@ func (app *app) index() {
 
 	app.Get("/", func(c *http200ok.Context) {
 
-		total, items, err := build.List(20, 0)
+		total, items, err := build.List(1, 0, 20, 0)
 
 		if err == nil {
 
