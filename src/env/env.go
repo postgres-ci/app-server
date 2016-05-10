@@ -20,7 +20,7 @@ func SetConnect(c *sqlx.DB) {
 
 	connect.SetMaxOpenConns(MaxOpenConns)
 	connect.SetMaxIdleConns(MaxIdleConns)
-	connect.SetConnMaxLifetime(ConnMaxLifetime)
+	//	connect.SetConnMaxLifetime(ConnMaxLifetime)
 }
 
 func Connect() *sqlx.DB {

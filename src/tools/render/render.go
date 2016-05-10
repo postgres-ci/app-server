@@ -63,7 +63,14 @@ func HTML(c *http200ok.Context, name string, context Context) error {
 
 	if template, found := templates[name]; found {
 
-		return template.ExecuteWriterUnbuffered(pongo2.Context(context), c.Response)
+		if err := template.ExecuteWriterUnbuffered(pongo2.Context(context), c.Response); err != nil {
+
+			log.Errorf("Render: %v", err)
+
+			return err
+		}
+
+		return nil
 	}
 
 	log.Errorf("Template '%s' not found", name)
