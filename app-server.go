@@ -2,7 +2,6 @@ package main
 
 import (
 	log "github.com/Sirupsen/logrus"
-	_ "github.com/flosch/pongo2-addons"
 	"github.com/postgres-ci/app-server/src/app"
 	"github.com/postgres-ci/app-server/src/common"
 	"github.com/postgres-ci/app-server/src/tools/render"

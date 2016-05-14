@@ -1,0 +1,89 @@
+{% extends "../internal/layout.html" %}
+{% block content_header%}
+    <h1>Builds</h1>
+{% endblock %}
+<ol class="breadcrumb">
+    {% block breadcrumb%}
+        <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">builds</li>
+    {% endblock %}
+    {% block content%}
+        {% verbatim %}
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Total: {{ total }}</h3>
+                <div class="box-tools"> 
+                    <select class="form-control">
+                        <option value=""></option>
+                        {% for branch in branches %}
+                            <option value="{{ branch.ID }}">{{ branch.Name }}</option>
+                        {% endfor %}
+                        
+                    </select>
+                </div>
+            </div>
+            <div class="box-body no-padding">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th width="70px">Status</th>
+                            <th width="270px">Commit</th>
+                            <th>Message</th>
+                            <th>Branch</th>
+                            <th>Duration</th>
+                            <th width="120px">Finished at</th>
+                        </tr>
+                        {% for item in items %}
+                            <tr lass="warning">
+                                <td>
+                                    {% if item.Status == "success" %}
+                                        <span class="label label-success">
+                                            {% elif item.Status == "pending" %}
+                                            <span class="label label-warning">
+                                                {% elif item.Status == "failed" %}
+                                                <span class="label label-danger">
+                                                {% else %}
+                                                    <span class="label label-primary">
+                                                    {% endif %}
+                                                {{ item.Status }}</span>
+                                            </td>
+                                            <td>
+                                                <a href="/project/{{ item.ProjectID }}/build/{{ item.BuildID }}/">{{ item.CommitSHA }}</a>
+                                            </td>
+                                            <td>{{ item.CommitMessage }}</td>
+                                            <td>
+                                                <a href="/{{ item.BranchID }}">{{ item.Branch }}</a>
+                                            </td>
+                                            <td>
+                                                {% if item.FinishedAt %}
+                                                    {{ item.FinishedAt | duration:item.StartedAt }}
+                                                {% else %}
+                                                    --
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if item.FinishedAt %}
+                                                    {{ item.FinishedAt | naturaltime }}
+                                                {% else %}
+                                                    --
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--
+                        <div class="box-footer clearfix">
+                            <ul class="pagination pagination-sm no-margin pull-right">
+                                <li><a href="#">&laquo;</a></li>
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">&raquo;</a></li>
+                            </ul>
+                        </div>
+                        -->
+                    </div>
+                {% endverbatim %}
+            {% endblock %}

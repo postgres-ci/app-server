@@ -3,6 +3,7 @@ package render
 import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/flosch/pongo2"
+	_ "github.com/postgres-ci/app-server/src/tools/render/filters"
 	"github.com/postgres-ci/http200ok"
 
 	"encoding/json"

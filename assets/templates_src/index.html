@@ -3,10 +3,6 @@
 {% block content_header%}
 <h1>Dashboard</h1> 
 {% endblock %}
-<ol class="breadcrumb">
-{% block breadcrumb%}
-<li><i class="fa fa-dashboard"></i> Home</li>
-{% endblock %}
 
 {% block content%} 
 {% verbatim %} 
@@ -25,7 +21,7 @@
                 {% for item in items %}
                 <tr>
                     <td>
-                        <a href="/projects/{{ item.ProjectID }}/">{{ item.ProjectName }}</a> <br>
+                        <a href="/project/{{ item.ProjectID }}/builds/">{{ item.ProjectName }}</a> <br>
                         {{ item.ProjectToken }}
                     </td>
                     <td>
@@ -46,12 +42,12 @@
                     {{ item.Status }}</span>
 
                     {% if item.LastBuildID %}
-                        (<a href="/projects/{{ item.ProjectID }}/build/{{ item.LastBuildID }}/">{{ item.CommitSHA | truncatechars:15 }}</a>)
+                        (<a href="/project/{{ item.ProjectID }}/build/{{ item.LastBuildID }}/">{{ item.CommitSHA | truncatechars:15 }}</a>)
                         
-                        {% if !item.FinishedAt.IsZero() %}
-                        {{ item.FinishedAt | timesince }}
+                        {% if item.FinishedAt %}
+                        {{ item.FinishedAt | naturaltime }}
                         {% else %}
-                        {{ item.StartedAt | timesince }}
+                        started at{{ item.StartedAt | naturaltime }}
                         {% endif %}
                     {% endif %}
                     </td>

@@ -8,27 +8,9 @@
 			"branch": "master"
 		},
 		{
-			"importpath": "github.com/extemporalgenome/slug",
-			"repository": "https://github.com/extemporalgenome/slug",
-			"revision": "0320c85e32e0015b090f08a5d1324d5ab6094f07",
-			"branch": "master"
-		},
-		{
-			"importpath": "github.com/flosch/go-humanize",
-			"repository": "https://github.com/flosch/go-humanize",
-			"revision": "3ba51eabe50663842d569003bab93fc256883173",
-			"branch": "master"
-		},
-		{
 			"importpath": "github.com/flosch/pongo2",
 			"repository": "https://github.com/flosch/pongo2",
 			"revision": "7f5515449ea9bbeb00256d9cbb654c556e7d0146",
-			"branch": "master"
-		},
-		{
-			"importpath": "github.com/flosch/pongo2-addons",
-			"repository": "https://github.com/flosch/pongo2-addons",
-			"revision": "bb4da1901facc08b4edd9261050143b95e36d0a1",
 			"branch": "master"
 		},
 		{
@@ -53,18 +35,6 @@
 			"importpath": "github.com/postgres-ci/http200ok",
 			"repository": "https://github.com/postgres-ci/http200ok",
 			"revision": "e1332340ca1c3ecf76b396b642dfae0cf65df8ce",
-			"branch": "master"
-		},
-		{
-			"importpath": "github.com/russross/blackfriday",
-			"repository": "https://github.com/russross/blackfriday",
-			"revision": "43529be3978d5a7b8e144f459e3f96491acc569c",
-			"branch": "master"
-		},
-		{
-			"importpath": "github.com/shurcooL/sanitized_anchor_name",
-			"repository": "https://github.com/shurcooL/sanitized_anchor_name",
-			"revision": "10ef21a441db47d8b13ebcc5fd2310f636973c77",
 			"branch": "master"
 		},
 		{
