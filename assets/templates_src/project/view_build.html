@@ -1,0 +1,77 @@
+{% extends "../internal/layout.html" %} {% block content_header%}
+<h1>Builds</h1> {% endblock %}
+<ol class="breadcrumb">
+    {% block breadcrumb%}
+        <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        {% verbatim %}<li><a href="/project/{{ build.ProjectID}}/builds/">{{ build.ProjectName}} builds</a></li>{% endverbatim %}
+        <li class="active">build</li>
+    {% endblock %} {% block content%} {% verbatim %}
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Commit {{ build.CommitSHA }}</h3>
+            <div class="box-tools">{{ build.CommittedAt | time:"Mon, 02 Jan 2006 15:04:05 -0700"}}</div>
+        </div>
+        <div class="box-body">
+            <strong>Branch:</strong> <a href="/project/{{ build.ProjectID }}/builds/branch/{{ build.BranchID }}/">{{ build.Branch }}</a><br>
+            <strong>Author:</strong> {{ build.AuthorName }} ({{ build.AuthorEmail }})<br>
+            {% if build.AuthorName != build.CommitterName %}<br>
+                <strong>Commiter:</strong> {{ build.CommitterName }} ({{ build.CommitterEmail }})<br>
+            {% endif %}
+            <strong>Message:</strong>
+        <pre>{{ build.CommitMessage }}</pre>
+    </div>
+</div>
+<div class="box">
+    <div class="box-header">
+        <h3 class="box-title">Config</h3>
+        
+    </div>
+    <div class="box-body">
+    <pre>{{ build.Config }}</pre>
+</div>
+</div>
+{% for part in build.Parts %}
+<div class="box collapsed-box{% if !part.Success %} box-danger box-solid{% endif %}">
+    <div class="box-header">
+        <h3 class="box-title">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+        Image: {{ part.DockerImage}}. Server version: {{ part.ServerVersion }}
+        </h3>
+        <div class="box-tools">
+        <strong>Duration:</strong> {{ part.FinishedAt | duration:part.StartedAt }}
+        </div>
+    </div>
+    <div class="box-body" style="display: none;">
+        <strong>Output:</strong>
+    <pre>{{ part.Output }}</pre>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Function</th>
+                <th width="110px">Duration</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for test in part.Tests %}
+                <tr>
+                    <td>
+                        
+                        {% if test.Errors %}
+                            <span class="label label-danger">{{ test.Namespace }}.{{ test.Procedure }}</span><br>
+                            {% for error in test.Errors %}
+                                {{ error.Message }} {{ error.Comment }} <br>
+                            {% endfor %}
+                        {% else %}
+                            {{ test.Namespace }}.{{ test.Procedure }}
+                        {% endif %}
+                    </td>
+                    <td>{{ test.FinishedAt | duration_seconds:test.StartedAt }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</div>
+</div>
+{% endfor %}
+{% endverbatim %} {% endblock %}

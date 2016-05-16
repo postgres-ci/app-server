@@ -47,7 +47,7 @@
                         {% if item.FinishedAt %}
                         {{ item.FinishedAt | naturaltime }}
                         {% else %}
-                        started at{{ item.StartedAt | naturaltime }}
+                        started at {{ item.StartedAt | naturaltime }}
                         {% endif %}
                     {% endif %}
                     </td>

@@ -14,7 +14,7 @@
                 <h3 class="box-title">Total: {{ total }}</h3>
                 <div class="box-tools"> 
                     <select class="form-control">
-                        <option value=""></option>
+                        <option value="">branches</option>
                         {% for branch in branches %}
                             <option value="{{ branch.ID }}">{{ branch.Name }}</option>
                         {% endfor %}
@@ -50,7 +50,7 @@
                                             <td>
                                                 <a href="/project/{{ item.ProjectID }}/build/{{ item.BuildID }}/">{{ item.CommitSHA }}</a>
                                             </td>
-                                            <td>{{ item.CommitMessage }}</td>
+                                            <td>{{ item.CommitMessage | truncatechars:255 }}</td>
                                             <td>
                                                 <a href="/{{ item.BranchID }}">{{ item.Branch }}</a>
                                             </td>
