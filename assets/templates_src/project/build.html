@@ -1,0 +1,54 @@
+{% extends "../internal/layout.html" %} {% block content_header%}
+<h1>Builds</h1> {% endblock %}
+<ol class="breadcrumb">
+    {% block breadcrumb%}
+    <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    {% verbatim %}<li><a href="/project/{{ build.ProjectID}}/builds/">{{ build.ProjectName}} builds</a></li>{% endverbatim %}
+    <li class="active">build</li>
+    {% endblock %} {% block content%} {% verbatim %}
+    <div class="box">
+        <div class="box-body">
+            <strong>Commit message:</strong>
+            <pre>{{ build.CommitMessage }}</pre>
+
+            <strong>Config:</strong>
+            <pre>{{ build.Config }}</pre> 
+
+            {% for part in build.Parts %}
+            <h3>{{ part.DockerImage}}. Server version: {{ part.ServerVersion }}</h3> 
+            <strong>Duratin:</strong> {{ part.FinishedAt | duration:part.StartedAt }}
+            <br>
+
+            <strong>Output:</strong>
+            <pre>{{ part.Output }}</pre>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Function</th>
+                        <th width="350px">Duration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for test in part.Tests %}
+                    <tr>
+                        <td>
+                             
+                            {% if test.Errors %} 
+                            <span class="label label-danger">{{ test.Namespace }}.{{ test.Procedure }}</span><br>
+                            {% for error in test.Errors %} 
+                                {{ error.Message }} {{ error.Comment }} <br>
+                            {% endfor %} 
+
+                            {% else %}
+                                {{ test.Namespace }}.{{ test.Procedure }}
+                            {% endif %}
+                        </td>
+                        <td>{{ test.FinishedAt | duration:test.StartedAt }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endfor %}
+        </div>
+    </div>
+    {% endverbatim %} {% endblock %}

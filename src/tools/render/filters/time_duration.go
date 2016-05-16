@@ -7,6 +7,11 @@ import (
 
 func duration(diff time.Duration) string {
 
+	if diff < time.Second {
+
+		return diff.String()
+	}
+
 	var (
 		value        string
 		milliseconds = diff.Nanoseconds() / 1000000
