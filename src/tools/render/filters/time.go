@@ -9,6 +9,7 @@ import (
 
 func init() {
 	pongo2.RegisterFilter("duration", durationFilter)
+	pongo2.RegisterFilter("duration_seconds", durationSecondsFilter)
 	pongo2.RegisterFilter("naturaltime", naturaltimeFilter)
 }
 
@@ -25,6 +26,21 @@ func durationFilter(in *pongo2.Value, param *pongo2.Value) (*pongo2.Value, *pong
 	}
 
 	return pongo2.AsValue(duration(diff)), nil
+}
+
+func durationSecondsFilter(in *pongo2.Value, param *pongo2.Value) (*pongo2.Value, *pongo2.Error) {
+
+	diff, err := timeDiff(in, param)
+
+	if err != nil {
+
+		return nil, &pongo2.Error{
+			Sender:   "filter:duration_seconds",
+			ErrorMsg: err.Error(),
+		}
+	}
+
+	return pongo2.AsValue(fmt.Sprintf("%.4fs", diff.Seconds())), nil
 }
 
 func naturaltimeFilter(in *pongo2.Value, param *pongo2.Value) (*pongo2.Value, *pongo2.Error) {

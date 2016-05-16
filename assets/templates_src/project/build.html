@@ -43,7 +43,7 @@
                                 {{ test.Namespace }}.{{ test.Procedure }}
                             {% endif %}
                         </td>
-                        <td>{{ test.FinishedAt | duration:test.StartedAt }}</td>
+                        <td>{{ test.FinishedAt | duration_seconds:test.StartedAt }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
