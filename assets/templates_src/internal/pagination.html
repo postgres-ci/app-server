@@ -1,0 +1,19 @@
+{% verbatim %}
+{% if pagination.Pages %}
+<ul class="pagination pagination-sm no-margin pull-right">
+    {% if pagination.Previous %}
+    <li><a href="{{ pagination.Previous.URL }}">&laquo;</a></li>
+    {% endif %}
+
+    {% for page in pagination.Pages %}
+    <li{% if  page.IsCurrent %} class="active"{% endif%}><a href="{{ page.URL }}">{{ page.Num }}</a></li>
+    {% endfor %}
+
+    {% if pagination.Next %}
+    <li><a href="{{ pagination.Next.URL }}">&raquo;</a></li>
+    {% endif %}
+</ul>
+{% endif %}
+{% endverbatim %}
+
+

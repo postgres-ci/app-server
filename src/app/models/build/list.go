@@ -66,11 +66,11 @@ func (b *Branches) Scan(src interface{}) error {
 
 type list struct {
 	Branches Branches `db:"branches"`
-	Total    int64    `db:"total"`
+	Total    int32    `db:"total"`
 	Items    Items    `db:"items"`
 }
 
-func List(projectID, branchID int32, limit, offset uint32) (*list, error) {
+func List(projectID, branchID, limit, offset int32) (*list, error) {
 
 	var (
 		err    error
