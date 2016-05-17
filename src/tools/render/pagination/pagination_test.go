@@ -97,7 +97,7 @@ func TestPagination(t *testing.T) {
 
 		if assert.Len(t, pagination.Pages, 11) {
 
-			if assert.Nil(t, pagination.Previous) && assert.Nil(t, pagination.Next) {
+			if assert.NotNil(t, pagination.Previous) && assert.Nil(t, pagination.Next) {
 
 				assert.Equal(t, int32(16), pagination.Pages[0].Num)
 				assert.Equal(t, int32(26), pagination.Pages[10].Num)

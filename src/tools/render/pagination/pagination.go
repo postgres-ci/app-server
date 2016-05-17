@@ -40,10 +40,28 @@ func New(c *http200ok.Context, total, perPage int32) *pagination {
 
 	case num <= window:
 		pages = pagesList(1, num)
-	case currentPage > (num - window):
-		pages = pagesList(num-window, num)
+	case (currentPage - (window / 2)) < 1:
+
+		pages = pagesList(1, window)
+
+		query.Set("p", fmt.Sprint(currentPage+1))
+		pagination.Next = &page{
+			Num: currentPage + 1,
+			URL: (&url.URL{
+				Path:     c.Request.URL.Path,
+				RawQuery: query.Encode(),
+			}).String(),
+		}
+
 	default:
-		pages = pagesList(currentPage-(window/2), currentPage+(window/2))
+
+		stop := currentPage + (window / 2)
+
+		if stop >= num {
+			stop = num
+		}
+
+		pages = pagesList(stop-window, stop)
 
 		query.Set("p", fmt.Sprint(currentPage-1))
 		pagination.Previous = &page{
@@ -54,13 +72,15 @@ func New(c *http200ok.Context, total, perPage int32) *pagination {
 			}).String(),
 		}
 
-		query.Set("p", fmt.Sprint(currentPage+1))
-		pagination.Next = &page{
-			Num: currentPage + 1,
-			URL: (&url.URL{
-				Path:     c.Request.URL.Path,
-				RawQuery: query.Encode(),
-			}).String(),
+		if stop != num {
+			query.Set("p", fmt.Sprint(currentPage+1))
+			pagination.Next = &page{
+				Num: currentPage + 1,
+				URL: (&url.URL{
+					Path:     c.Request.URL.Path,
+					RawQuery: query.Encode(),
+				}).String(),
+			}
 		}
 	}
 

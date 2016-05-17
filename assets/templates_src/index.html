@@ -4,6 +4,10 @@
 <h1>Dashboard</h1> 
 {% endblock %}
 
+{% block menu %}
+{% include "internal/layout/menu.html" with page="dashboard" %}
+{% endblock %}
+
 {% block content%} 
 {% verbatim %} 
 <div class="box">

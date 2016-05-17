@@ -1,6 +1,5 @@
 {% extends "../internal/layout.html" %} {% block content_header%}
 <h1>Builds</h1> {% endblock %}
-<ol class="breadcrumb">
     {% block breadcrumb%}
         <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
         {% verbatim %}<li><a href="/project/{{ build.ProjectID}}/builds/">{{ build.ProjectName}} builds</a></li>{% endverbatim %}

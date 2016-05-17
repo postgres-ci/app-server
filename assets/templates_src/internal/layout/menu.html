@@ -2,9 +2,12 @@
     <section class="sidebar">
         <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
-            <li><a href="/"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
-            <!--li><a href="#"><i class="fa fa-book"></i> <span>Projects</span></a></li-->
-            <li><a href="#"><i class="fa fa-users"></i> <span>Users</span></a></li>
+            <li{% if page == "dashboard"%} class="active" {% endif %}>
+            	<a href="/"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
+            </li>
+            <li{% if page == "users"%} class="active" {% endif %}>
+            	<a href="/users/"><i class="fa fa-users"></i> <span>Users</span></a>
+            </li>
         </ul>
     </section>
 </aside>

@@ -1,0 +1,59 @@
+{% extends "../internal/layout.html" %} {% block content_header%}
+<h1>Users</h1> {% endblock %} {% block breadcrumb%}
+<li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+<li class="active">users</li>
+{% endblock %} {% block menu %} {% include "../internal/layout/menu.html" with page="users" %} {% endblock %} {% block content%} {% verbatim %}
+<div class="box">
+    <div class="box-header">
+        <h3 class="box-title">Users</h3>
+        <div class="box-tools">
+            <div class="input-group input-group-sm" style="width: 250px;">
+                <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-body no-padding">
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <th width="50px">#</th>
+                    <th>user name</th>
+                    <th>login</th>
+                    <th>email</th>
+                    {% if CurrentUser.IsSuperuser %}
+                    <th width="150px">-</th>
+                    {% endif %}
+                </tr>
+
+                <tr>
+                    <td>42</td>
+                    <td>user name</td>
+                    <td>login</td>
+                    <td>email</td>
+                    {% if CurrentUser.IsSuperuser %}
+                    <td>
+                        <a href=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i>edit</a> 
+                        <a href="#" data-toggle="modal" data-target="#confirmAction" data-action="/users/delete/42/"><i class="fa fa-trash" aria-hidden="true"></i>delete</a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% for user in users %}
+                <tr>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="box-footer clearfix">
+        {% if CurrentUser.IsSuperuser %}
+        <button type="submit" class="btn btn-primary">Add user</button>
+        {% endif %} {% endverbatim %} {% include "../internal/pagination.html" %}
+    </div>
+</div>
+{% endblock %}
+
+
+

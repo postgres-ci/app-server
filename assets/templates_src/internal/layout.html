@@ -11,23 +11,25 @@
     <link rel="stylesheet" href="/static/dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="/static/dist/css/skins/skin-black.min.css">
 </head>
-
+{% include "confirm_action.html" %}
 <body class="hold-transition skin-black sidebar-collapse sidebar-mini">
     <div class="wrapper">
         {% include "layout/header.html" %} 
+        {% block menu %}
         {% include "layout/menu.html" %}
+        {% endblock %}
         <div class="content-wrapper">
             <section class="content-header">
                 {% block content_header%}
                 <h1>Home<small>...</small></h1> 
                 {% endblock %}
                 <ol class="breadcrumb">
-                    {% block breadcrumb%}
+                    {% block breadcrumb %}
                     {% endblock %}
                 </ol>
             </section>
             <section class="content">
-                {% block content%}{% endblock %}
+                {% block content %}{% endblock %}
             </section>
         </div>
         <footer class="main-footer">
@@ -40,6 +42,7 @@
     <script src="/static/plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <script src="/static/bootstrap/js/bootstrap.min.js"></script>
     <script src="/static/dist/js/app.min.js"></script>
+    <script src="/static/js/app.js"></script>
 </body>
 
 </html>
