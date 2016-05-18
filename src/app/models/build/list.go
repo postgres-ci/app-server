@@ -72,16 +72,9 @@ type list struct {
 
 func List(projectID, branchID, limit, offset int32) (*list, error) {
 
-	var (
-		err    error
-		result list
-	)
+	var list list
 
-	if branchID > 0 {
-		err = env.Connect().Get(&result, `SELECT total, branches, items FROM build.list_by_branch($1, $2, $3, $4)`, projectID, branchID, limit, offset)
-	} else {
-		err = env.Connect().Get(&result, `SELECT total, branches, items FROM build.list($1, $2, $3)`, projectID, limit, offset)
-	}
+	err := env.Connect().Get(&list, `SELECT total, branches, items FROM build.list($1, $2, $3, $4)`, projectID, branchID, limit, offset)
 
 	if err != nil {
 
@@ -90,5 +83,5 @@ func List(projectID, branchID, limit, offset int32) (*list, error) {
 		return nil, err
 	}
 
-	return &result, nil
+	return &list, nil
 }

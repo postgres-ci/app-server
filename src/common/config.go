@@ -7,11 +7,19 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strconv"
 )
 
 func ReadConfig(path string) (Config, error) {
 
 	var config Config
+
+	if path == "" {
+
+		config.setFromEnv()
+
+		return config, nil
+	}
 
 	if _, err := os.Open(path); err != nil {
 
@@ -51,6 +59,27 @@ type Connect struct {
 	Username string `yaml:"username"`
 	Password string `yaml:"password"`
 	Database string `yaml:"database"`
+}
+
+func (c *Config) setFromEnv() {
+
+	var port uint32 = 5432
+
+	if value, err := strconv.ParseUint(os.Getenv("DB_PORT"), 10, 32); err == nil {
+
+		port = uint32(value)
+	}
+
+	c.Address = os.Getenv("APP_ADDRESS")
+	c.Templates = os.Getenv("APP_TEMPLATES")
+	c.Loglevel = os.Getenv("APP_LOG_LEVEL")
+	c.Connect = Connect{
+		Host:     os.Getenv("DB_HOST"),
+		Port:     port,
+		Username: os.Getenv("DB_USERNAME"),
+		Password: os.Getenv("DB_PASSWORD"),
+		Database: os.Getenv("DB_DATABASE"),
+	}
 }
 
 func (c *Connect) DSN() string {

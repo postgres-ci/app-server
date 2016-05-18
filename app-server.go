@@ -20,14 +20,25 @@ const usage = `
 Postgres-CI app-server
 
 Usage:
-    -c /path/to/config.yaml (default is /etc/postgres-ci/app-server.yaml)
+    -c /path/to/config.yaml (if empty app will use environment variables)
     -debug (enable debug mode)
+
+Environment variables:
+
+    APP_ADDRESS (example: 127.0.0.1:8888)
+    APP_TEMPLATES (example: /opt/postgres-ci/app-server/templates/)
+    APP_LOG_LEVEL (one of: info/warning/error)
+    DB_HOST (example: 10.20.11.42)
+    DB_PORT (example: 5432)
+    DB_USERNAME (example: postgres_ci)
+    DB_PASSWORD (example: PcSd23@@a)
+    DB_DATABASE (example: postgres_ci)
 `
 
 func main() {
 
 	flag.BoolVar(&debug, "debug", false, "")
-	flag.StringVar(&pathToConfig, "c", "/etc/postgres-ci/app-server.yaml", "")
+	flag.StringVar(&pathToConfig, "c", "", "")
 
 	flag.Usage = func() {
 
