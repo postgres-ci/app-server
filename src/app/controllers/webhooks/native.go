@@ -44,11 +44,7 @@ func nativeHandler(c *http200ok.Context) {
 			return
 		}
 
-		render.JSON(c, struct {
-			Success bool `json:"success"`
-		}{
-			Success: true,
-		})
+		render.JSONok(c)
 
 	case "push":
 
@@ -68,11 +64,7 @@ func nativeHandler(c *http200ok.Context) {
 			return
 		}
 
-		render.JSON(c, struct {
-			Success bool `json:"success"`
-		}{
-			Success: true,
-		})
+		render.JSONok(c)
 
 	default:
 

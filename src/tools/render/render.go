@@ -86,6 +86,13 @@ func JSON(c *http200ok.Context, v interface{}) error {
 	return json.NewEncoder(c.Response).Encode(v)
 }
 
+func JSONok(c *http200ok.Context) {
+	JSON(c, struct {
+		Success bool `json:"success"`
+	}{
+		Success: true,
+	})
+}
 func JSONError(c *http200ok.Context, code int, format string, a ...interface{}) error {
 
 	c.Response.Header().Add("Content-Type", "application/json")
