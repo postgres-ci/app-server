@@ -19,7 +19,7 @@ func CheckPassword(c *http200ok.Context) {
 		}
 	}
 
-	render.JSONError(c, http.StatusForbidden, "Authentication failed")
+	render.JSONError(c, http.StatusUnauthorized, "Authentication failed")
 
 	c.Stop()
 }

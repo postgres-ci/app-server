@@ -20,7 +20,7 @@ const usage = `
 Postgres-CI app-server
 
 Usage:
-    -c /path/to/config.yaml (if empty app will use environment variables)
+    -c /path/to/config.yaml (if not setted app will use environment variables)
     -debug (enable debug mode)
 
 Environment variables:
