@@ -28,14 +28,14 @@ type build struct {
 }
 
 type Part struct {
-	PartID        int32     `json:"part_id"`
-	DockerImage   string    `json:"docker_image"`
-	ServerVersion string    `json:"server_version"`
-	Output        string    `json:"output"`
-	Success       bool      `json:"success"`
-	StartedAt     time.Time `json:"started_at"`
-	FinishedAt    time.Time `json:"finished_at"`
-	Tests         []Test    `json:"tests"`
+	PartID     int32     `json:"part_id"`
+	Image      string    `json:"image"`
+	Version    string    `json:"version"`
+	Output     string    `json:"output"`
+	Success    bool      `json:"success"`
+	StartedAt  time.Time `json:"started_at"`
+	FinishedAt time.Time `json:"finished_at"`
+	Tests      []Test    `json:"tests"`
 }
 
 type Parts []Part
@@ -57,11 +57,9 @@ func (p *Parts) Scan(src interface{}) error {
 }
 
 type Test struct {
-	Namespace  string    `json:"namespace"`
-	Procedure  string    `json:"procedure"`
-	Errors     []Error   `json:"errors"`
-	StartedAt  time.Time `json:"started_at"`
-	FinishedAt time.Time `json:"finished_at"`
+	Function string  `json:"function"`
+	Errors   []Error `json:"errors"`
+	Duration float64 `json:"duration"`
 }
 
 type Error struct {

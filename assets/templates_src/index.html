@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block content%} 
+
 {% verbatim %} 
 <div class="box">
     <div class="box-header">
@@ -20,7 +21,10 @@
                 <tr>
                     <th>Project</th>
                     <th>Owner</th>
-                    <th width="350px">Last build</th>
+                    <th width="300px">Last build</th>
+                    {% if CurrentUser.IsSuperuser %}
+                    <th width="80px">-</th>
+                    {% endif %}
                 </tr>
                 {% for item in items %}
                 <tr>
@@ -55,6 +59,12 @@
                         {% endif %}
                     {% endif %}
                     </td>
+                    {% if CurrentUser.IsSuperuser %}
+                    <td>
+                        
+                        <a href="#" data-toggle="modal" data-target="#confirmAction" data-action="/project/{{ item.ProjectID }}/delete/"><i class="fa fa-trash" aria-hidden="true"></i>delete</a>
+                    </td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </tbody>
@@ -62,9 +72,45 @@
     </div>
     {% if CurrentUser.IsSuperuser %}
     <div class="box-footer">
-        <button type="submit" class="btn btn-primary">Add project</button>
+        <button type="submit" data-toggle="modal" data-target="#addProject" class="btn btn-primary">Add project</button>
     </div>
     {% endif %}
 </div>
+{% if CurrentUser.IsSuperuser %}
+<div class="modal fade" id="addProject" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add project</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="message-text" class="control-label">name:</label>
+                    <input type="text" name="name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="message-text" class="control-label">owner:</label>
+                    <select class="form-control" name="owner">
+                        <option>sdds</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message-text" class="control-label">repository url</label>
+                    <input type="text" name="repository_url" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="message-text" class="control-label">github secret</label>
+                    <input type="text" name="github_secret" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+                <button type="submit" class="btn btn-primary">add</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 {% endverbatim %} 
 {% endblock %}

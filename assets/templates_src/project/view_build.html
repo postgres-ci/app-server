@@ -34,7 +34,7 @@
     <div class="box-header">
         <h3 class="box-title">
         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
-        Image: {{ part.DockerImage}}. Server version: {{ part.ServerVersion }}
+        Image: {{ part.Image}}. Server version: {{ part.Version }}
         </h3>
         <div class="box-tools">
         <strong>Duration:</strong> {{ part.FinishedAt | duration:part.StartedAt }}
@@ -56,15 +56,15 @@
                     <td>
                         
                         {% if test.Errors %}
-                            <span class="label label-danger">{{ test.Namespace }}.{{ test.Procedure }}</span><br>
+                            <span class="label label-danger">{{ test.Function }}</span><br>
                             {% for error in test.Errors %}
                                 {{ error.Message }} {{ error.Comment }} <br>
                             {% endfor %}
                         {% else %}
-                            {{ test.Namespace }}.{{ test.Procedure }}
+                            {{ test.Function }}
                         {% endif %}
                     </td>
-                    <td>{{ test.FinishedAt | duration_seconds:test.StartedAt }}</td>
+                    <td>{{ test.Duration | floatformat:4 }}s</td>
                 </tr>
             {% endfor %}
         </tbody>
