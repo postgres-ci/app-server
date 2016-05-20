@@ -70,9 +70,9 @@ func (c *Config) setFromEnv() {
 		port = uint32(value)
 	}
 
-	c.Address = os.Getenv("APP_ADDRESS")
-	c.Templates = os.Getenv("APP_TEMPLATES")
-	c.Loglevel = os.Getenv("APP_LOG_LEVEL")
+	c.Address = os.Getenv("ADDRESS")
+	c.Templates = os.Getenv("TEMPLATES")
+	c.Loglevel = os.Getenv("LOG_LEVEL")
 	c.Connect = Connect{
 		Host:     os.Getenv("DB_HOST"),
 		Port:     port,

@@ -20,19 +20,22 @@ const usage = `
 Postgres-CI app-server
 
 Usage:
-    -c /path/to/config.yaml (if not setted app will use environment variables)
+    -c /path/to/config.yaml (if not set, then app-server will use environment variables)
     -debug (enable debug mode)
 
 Environment variables:
 
-    APP_ADDRESS (example: 127.0.0.1:8888)
-    APP_TEMPLATES (example: /opt/postgres-ci/app-server/templates/)
-    APP_LOG_LEVEL (one of: info/warning/error)
-    DB_HOST (example: 10.20.11.42)
-    DB_PORT (example: 5432)
-    DB_USERNAME (example: postgres_ci)
-    DB_PASSWORD (example: PcSd23@@a)
-    DB_DATABASE (example: postgres_ci)
+    ADDRESS   - bind address ip:port
+    TEMPLATES - path to templates dir
+    LOG_LEVEL - one of: info/warning/error
+
+    == PostgreSQL server credentials
+
+    DB_HOST
+    DB_PORT
+    DB_USERNAME
+    DB_PASSWORD
+    DB_DATABASE 
 `
 
 func main() {
