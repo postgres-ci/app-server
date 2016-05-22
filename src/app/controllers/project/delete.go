@@ -1,9 +1,8 @@
-package users
+package project
 
 import (
 	"github.com/postgres-ci/app-server/src/app/models/auth"
-	"github.com/postgres-ci/app-server/src/app/models/users"
-	"github.com/postgres-ci/app-server/src/common/errors"
+	"github.com/postgres-ci/app-server/src/app/models/project"
 	"github.com/postgres-ci/app-server/src/tools/params"
 	"github.com/postgres-ci/app-server/src/tools/render"
 	"github.com/postgres-ci/http200ok"
@@ -22,16 +21,9 @@ func deleteHandler(c *http200ok.Context) {
 		return
 	}
 
-	if err := users.Delete(params.ToInt32(c, "UserID")); err != nil {
+	if err := project.Delete(params.ToInt32(c, "ProjectID")); err != nil {
 
-		code := http.StatusInternalServerError
-
-		if e, ok := err.(*errors.Error); ok {
-
-			code = e.Code
-		}
-
-		render.JSONError(c, code, err.Error())
+		render.JSONError(c, http.StatusInternalServerError, err.Error())
 
 		return
 	}

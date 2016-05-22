@@ -1,8 +1,8 @@
 package auth
 
 import (
-	log "github.com/Sirupsen/logrus"
 	"github.com/postgres-ci/app-server/src/app/models/auth"
+	"github.com/postgres-ci/app-server/src/common/errors"
 	"github.com/postgres-ci/app-server/src/tools"
 	"github.com/postgres-ci/app-server/src/tools/render"
 	"github.com/postgres-ci/http200ok"
@@ -47,13 +47,18 @@ func loginHandler(c *http200ok.Context) {
 
 	sessioID, err := auth.Login(login, password)
 
-	log.Debugf("login: %s, password: %s -> %s, %v", login, password, sessioID, err)
-
 	if err != nil {
+
+		var _error = err.Error()
+
+		if errors.IsNotFound(err) || errors.IsInvalidPassword(err) {
+
+			_error = "INVALID_LOGIN_OR_PASSWORD"
+		}
 
 		render.HTML(c, "login.html", render.Context{
 
-			"error": err.Error(),
+			"error": _error,
 		})
 
 		return

@@ -27,5 +27,4 @@ func listHandler(c *http200ok.Context) {
 		"query":      query.Get("q"),
 		"pagination": pagination.New(c, list.Total, perPage),
 	})
-
 }

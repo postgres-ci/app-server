@@ -1,6 +1,7 @@
 package webhooks
 
 import (
+	log "github.com/Sirupsen/logrus"
 	"github.com/postgres-ci/app-server/src/app/models/webhooks"
 	"github.com/postgres-ci/app-server/src/tools/render"
 	"github.com/postgres-ci/hooks/git"
@@ -11,6 +12,11 @@ import (
 )
 
 func nativeHandler(c *http200ok.Context) {
+
+	log.Debugf("Webhook [native]. Token: %s, event: %s",
+		c.Request.Header.Get("X-Token"),
+		c.Request.Header.Get("X-Event"),
+	)
 
 	token := c.Request.Header.Get("X-Token")
 

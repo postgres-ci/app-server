@@ -5,6 +5,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.com/postgres-ci/app-server/src/app/middleware"
+	"github.com/postgres-ci/app-server/src/app/routines"
 	"github.com/postgres-ci/app-server/src/common"
 	"github.com/postgres-ci/app-server/src/env"
 	"github.com/postgres-ci/http200ok"
@@ -42,6 +43,8 @@ type app struct {
 }
 
 func (app *app) Run() {
+
+	routines.Run()
 
 	log.Fatal(http.ListenAndServe(app.address, app.Server))
 }

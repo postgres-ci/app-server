@@ -9,9 +9,10 @@ import (
 	"github.com/postgres-ci/http200ok"
 
 	"net/http"
+	"strings"
 )
 
-func deleteHandler(c *http200ok.Context) {
+func updateHandler(c *http200ok.Context) {
 
 	currentUser := c.Get("CurrentUser").(*auth.User)
 
@@ -22,7 +23,18 @@ func deleteHandler(c *http200ok.Context) {
 		return
 	}
 
-	if err := users.Delete(params.ToInt32(c, "UserID")); err != nil {
+	var (
+		name        = strings.TrimSpace(c.Request.PostFormValue("name"))
+		email       = strings.TrimSpace(c.Request.PostFormValue("email"))
+		isSuperuser bool
+	)
+
+	if on := c.Request.PostFormValue("is_superuser"); on != "" {
+
+		isSuperuser = true
+	}
+
+	if err := users.Update(params.ToInt32(c, "UserID"), name, email, isSuperuser); err != nil {
 
 		code := http.StatusInternalServerError
 
