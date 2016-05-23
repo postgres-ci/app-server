@@ -17,6 +17,8 @@ func buildsHandler(c *http200ok.Context) {
 
 	if err != nil {
 
+		render.InternalServerError(c, err)
+
 		return
 	}
 

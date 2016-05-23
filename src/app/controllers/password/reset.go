@@ -1,8 +1,8 @@
-package project
+package password
 
 import (
 	"github.com/postgres-ci/app-server/src/app/models/auth"
-	"github.com/postgres-ci/app-server/src/app/models/project"
+	"github.com/postgres-ci/app-server/src/app/models/password"
 	"github.com/postgres-ci/app-server/src/common/errors"
 	"github.com/postgres-ci/app-server/src/tools/params"
 	"github.com/postgres-ci/app-server/src/tools/render"
@@ -11,9 +11,13 @@ import (
 	"net/http"
 )
 
-func deleteHandler(c *http200ok.Context) {
+func resetHandler(c *http200ok.Context) {
 
-	currentUser := c.Get("CurrentUser").(*auth.User)
+	var (
+		currentUser     = c.Get("CurrentUser").(*auth.User)
+		newPassword     = c.Request.PostFormValue("new_password")
+		confirmPassword = c.Request.PostFormValue("confirm_password")
+	)
 
 	if !currentUser.IsSuperuser {
 
@@ -22,7 +26,14 @@ func deleteHandler(c *http200ok.Context) {
 		return
 	}
 
-	if err := project.Delete(params.ToInt32(c, "ProjectID")); err != nil {
+	if newPassword != confirmPassword {
+
+		render.JSONError(c, code, "Entered password not equal confirmed")
+
+		return
+	}
+
+	if err := password.Reset(params.ToInt32(c, "UserID"), newPassword); err != nil {
 
 		code := http.StatusInternalServerError
 

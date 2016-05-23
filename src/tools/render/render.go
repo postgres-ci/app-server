@@ -8,6 +8,7 @@ import (
 
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"os"
 	"path/filepath"
 )
@@ -79,6 +80,16 @@ func HTML(c *http200ok.Context, name string, context Context) error {
 	return fmt.Errorf("template '%s' not found", name)
 }
 
+func NotFound(c *http200ok.Context) {
+
+	http.NotFound(c.Response, c.Request)
+}
+
+func InternalServerError(c *http200ok.Context, err error) {
+
+	c.Response.WriteHeader(http.StatusInternalServerError)
+}
+
 func JSON(c *http200ok.Context, v interface{}) error {
 
 	c.Response.Header().Add("Content-Type", "application/json")
@@ -87,6 +98,7 @@ func JSON(c *http200ok.Context, v interface{}) error {
 }
 
 func JSONok(c *http200ok.Context) {
+
 	JSON(c, struct {
 		Success bool `json:"success"`
 	}{

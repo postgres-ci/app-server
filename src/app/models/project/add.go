@@ -2,6 +2,7 @@ package project
 
 import (
 	log "github.com/Sirupsen/logrus"
+	"github.com/postgres-ci/app-server/src/common/errors"
 	"github.com/postgres-ci/app-server/src/env"
 )
 
@@ -22,7 +23,12 @@ func Add(ownerID int32, name, url, githubSecret string) error {
 
 	if err != nil {
 
-		log.Errorf("Could not add project: %v", err)
+		err := errors.Wrap(err)
+
+		if err.(*errors.Error).IsFatal() {
+
+			log.Errorf("Could not add project: %v", err)
+		}
 
 		return err
 	}

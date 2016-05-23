@@ -1,8 +1,8 @@
 package routines
 
 import (
-	"github.com/postgres-ci/app-server/src/app/models/auth"
-	"github.com/postgres-ci/app-server/src/app/models/build"
+	log "github.com/Sirupsen/logrus"
+	"github.com/postgres-ci/app-server/src/env"
 
 	"time"
 )
@@ -11,18 +11,16 @@ func Run() {
 
 	go func() {
 
-		var (
-			authGC  = time.Tick(time.Minute)
-			buildGC = time.Tick(10 * time.Minute)
-		)
+		gc := time.Tick(10 * time.Minute)
 
 		for {
-			select {
-			case <-authGC:
-				auth.GC()
-			case <-buildGC:
-				build.GC()
+
+			if _, err := env.Connect().Exec("SELECT auth.gc()"); err != nil {
+
+				log.Errorf("Auth.GC %v", err)
 			}
+
+			<-gc
 		}
 	}()
 }

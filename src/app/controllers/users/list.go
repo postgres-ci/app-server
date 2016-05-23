@@ -14,9 +14,12 @@ func listHandler(c *http200ok.Context) {
 		perPage int32 = 20
 		query         = c.Request.URL.Query()
 	)
+
 	list, err := users.List(perPage, limit.Offset(c, perPage), query.Get("q"))
 
 	if err != nil {
+
+		render.InternalServerError(c, err)
 
 		return
 	}

@@ -12,8 +12,3 @@ func Logout(sessionID string) {
 
 	env.Connect().Exec("SELECT auth.logout($1)", sessionID)
 }
-
-func GC() {
-
-	env.Connect().Exec("SELECT auth.gc()")
-}

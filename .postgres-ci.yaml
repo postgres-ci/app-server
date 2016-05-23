@@ -1,0 +1,16 @@
+images:
+  - postgresci/golang:1.6
+entrypoint:
+  - /sbin/init
+commands:
+  - go version
+  - go get -u github.com/FiloSottile/gvt
+  - gvt restore
+  - mkdir -p /go/src/github.com/postgres-ci/app-server
+  - cp -r . /go/src/github.com/postgres-ci/app-server/
+  - echo ==== Tests ====
+tests:
+  - go test -cover -v github.com/postgres-ci/app-server/src/app/models/webhooks/common
+  - go test -cover -v github.com/postgres-ci/app-server/src/app/models/webhooks/github
+  - go test -cover -v github.com/postgres-ci/app-server/src/tools/limit
+  - go test -cover -v github.com/postgres-ci/app-server/src/tools/render/pagination

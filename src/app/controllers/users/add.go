@@ -30,15 +30,10 @@ func addHandler(c *http200ok.Context) {
 		isSuperuser bool
 	)
 
-	switch true {
-	case login == "":
-		render.JSONError(c, http.StatusOK, "Login could not be empty")
-		return
-	case password == "":
-		render.JSONError(c, http.StatusOK, "Password could not be empty")
-		return
-	case email == "":
-		render.JSONError(c, http.StatusOK, "Email could not be empty")
+	if login == "" || password == "" || email == "" {
+
+		render.JSONError(c, http.StatusOK, "\"Login\", \"password\" and \"email\" fields are required")
+
 		return
 	}
 

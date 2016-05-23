@@ -8,6 +8,13 @@
 			"branch": "master"
 		},
 		{
+			"importpath": "github.com/davecgh/go-spew/spew",
+			"repository": "https://github.com/davecgh/go-spew",
+			"revision": "5215b55f46b2b919f50a1df0eaa5886afe4e3b3d",
+			"branch": "master",
+			"path": "/spew"
+		},
+		{
 			"importpath": "github.com/flosch/pongo2",
 			"repository": "https://github.com/flosch/pongo2",
 			"revision": "7f5515449ea9bbeb00256d9cbb654c556e7d0146",
@@ -32,9 +39,28 @@
 			"branch": "master"
 		},
 		{
+			"importpath": "github.com/pmezard/go-difflib/difflib",
+			"repository": "https://github.com/pmezard/go-difflib",
+			"revision": "792786c7400a136282c1664665ae0a8db921c6c2",
+			"branch": "master",
+			"path": "/difflib"
+		},
+		{
 			"importpath": "github.com/postgres-ci/http200ok",
 			"repository": "https://github.com/postgres-ci/http200ok",
 			"revision": "e1332340ca1c3ecf76b396b642dfae0cf65df8ce",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/stretchr/objx",
+			"repository": "https://github.com/stretchr/objx",
+			"revision": "1a9d0bb9f541897e62256577b352fdbc1fb4fd94",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/stretchr/testify",
+			"repository": "https://github.com/stretchr/testify",
+			"revision": "6cb3b85ef5a0efef77caef88363ec4d4b5c0976d",
 			"branch": "master"
 		},
 		{

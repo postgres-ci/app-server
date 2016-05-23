@@ -7,4 +7,5 @@ import (
 func Route(server *http200ok.Server) {
 
 	server.Post("/password/change/", changeHandler)
+	server.Post("/password/reset/:UserID/", resetHandler)
 }
