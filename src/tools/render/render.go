@@ -111,8 +111,6 @@ func JSONError(c *http200ok.Context, code int, format string, a ...interface{}) 
 	c.Response.Header().Set("X-Content-Type-Options", "nosniff")
 	c.Response.WriteHeader(code)
 
-	log.Error(fmt.Sprintf(format, a...))
-
 	return json.NewEncoder(c.Response).Encode(struct {
 		Success bool        `json:"success"`
 		Code    int         `json:"code"`

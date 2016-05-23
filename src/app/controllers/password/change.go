@@ -21,7 +21,7 @@ func changeHandler(c *http200ok.Context) {
 
 	if newPassword != confirmPassword {
 
-		render.JSONError(c, code, "Entered password not equal confirmed")
+		render.JSONError(c, http.StatusBadRequest, "Your password and confirmation password do not match")
 
 		return
 	}

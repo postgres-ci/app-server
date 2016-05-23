@@ -28,7 +28,7 @@ func resetHandler(c *http200ok.Context) {
 
 	if newPassword != confirmPassword {
 
-		render.JSONError(c, code, "Entered password not equal confirmed")
+		render.JSONError(c, http.StatusBadRequest, "Entered password not equal confirmed")
 
 		return
 	}

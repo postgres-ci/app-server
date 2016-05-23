@@ -41,7 +41,7 @@
                     <td>{{ user.UpdatedAt | time:"Mon, 02 Jan 2006 15:04:05 -0700" }}</td>
                     {% if CurrentUser.IsSuperuser %}
                     <td>
-                        <a href=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i>edit</a>
+                        <a href="#"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>edit</a>
                         <a href="#" data-toggle="modal" data-target="#confirmAction" data-action="/users/delete/{{ user.ID }}/"><i class="fa fa-trash" aria-hidden="true"></i>delete</a>
                     </td>
                     {% endif %}
