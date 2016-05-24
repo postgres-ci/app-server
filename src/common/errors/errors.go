@@ -42,17 +42,17 @@ func Wrap(err error) error {
 		switch err.Message {
 		case "LOGIN_ALREADY_EXISTS":
 			return &Error{
-				Code:    http.StatusOK,
+				Code:    http.StatusBadRequest,
 				Message: "Login already exists",
 			}
 		case "EMAIL_ALREADY_EXISTS":
 			return &Error{
-				Code:    http.StatusOK,
+				Code:    http.StatusBadRequest,
 				Message: "Email already exists",
 			}
 		case "INVALID_EMAIL":
 			return &Error{
-				Code:    http.StatusOK,
+				Code:    http.StatusBadRequest,
 				Message: "Invalid email",
 			}
 		}

@@ -39,10 +39,13 @@
                     </td>
                     {% if CurrentUser.IsSuperuser %}
                     <td>
-                
-
-                     <a href="#" data-toggle="modal" data-target="#editProject" data-action="/project/update/{{ item.ProjectID }}/"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>edit</a>
-
+                        <a href="#" 
+                        data-toggle="modal" 
+                        data-target="#projectForm" 
+                        data-title="Edit project"
+                        data-action="/project/update/{{ item.ProjectID }}/"
+                        data-source="/project/{{ item.ProjectID }}/get/"
+                        ><i class="fa fa-pencil-square-o" aria-hidden="true"></i>edit</a>
                         <a href="#" data-toggle="modal" data-target="#confirmAction" data-action="/project/delete/{{ item.ProjectID }}/"><i class="fa fa-trash" aria-hidden="true"></i>delete</a>
                     </td>
                     {% endif %}
@@ -53,33 +56,41 @@
     </div>
     {% if CurrentUser.IsSuperuser %}
     <div class="box-footer">
-        <button type="submit" data-toggle="modal" data-target="#addProject" class="btn btn-primary">Add project</button>
+        <button 
+        type="submit" 
+        data-toggle="modal" 
+        data-target="#projectForm" 
+        data-action="/project/add/"
+        data-title="Add project"
+        class="btn btn-primary"
+    >Add project</button>
     </div>
     {% endif %}
 </div>
 {% if CurrentUser.IsSuperuser %}
-<div class="modal fade" id="addProject" tabindex="-1" role="dialog">
+<div class="modal fade" id="projectForm" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form method="post">
+        <form method="post" action="">
+            <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Add project</h4>
+                    <h4 class="modal-title">-</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="message-text" class="control-label">name:</label>
-                        <input type="text" name="name" class="form-control" data-title="Please enter a project name" required>
+                        <input type="text" name="name" id="project_name" class="form-control" data-title="Please enter a project name" required>
                     </div>
-                    <div class="form-group">
+                    <input type="hidden" value="{{ CurrentUser.ID }}" name="owner_id">
+                    <!--div class="form-group">
                         <label for="message-text" class="control-label">owner:</label>
-                        <select class="form-control" style="width: 100%;" id="select_users" name="owner_id">
-                            <option value="1">first</option>
+                        <select class="form-control" id="select_users" name="owner_id">
+                            <option value="{{ CurrentUser.ID }}">{{ CurrentUser.Name }}</option>
                         </select>
-                    </div>
+                    </div-->
                     <div class="form-group">
                         <label for="message-text" class="control-label">repository url</label>
-                        <input type="text" name="repository_url" class="form-control"  data-title="Please enter a repository url" required>
+                        <input type="text" name="url" id="repository_url" class="form-control" data-title="Please enter a repository url" required>
                     </div>
                     <!--div class="form-group">
                     <label for="message-text" class="control-label">github secret</label>
@@ -88,10 +99,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
-                    <button type="submit" class="btn btn-primary">add project</button>
+                    <button type="submit" class="btn btn-primary">submit</button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 {% endif %} {% endverbatim %} {% endblock %}
