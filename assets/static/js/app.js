@@ -36,18 +36,89 @@ $('#confirmAction').find('.modal-content form').on('submit', function(event) {
     return false
 });
 
-$('#changePassword').on('hide.bs.modal', function (event) {
+$('#changePassword, #userForm, #projectForm').on('hide.bs.modal', function (event) {
     $(this).find('.modal-dialog form').trigger("reset");
 });
 
-$('#changePassword form').bootstrap3Validate(function(e, data) {
+$('#projectForm').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget);
+
+    $(this).find('.modal-dialog form').attr('action', button.data('action'));
+    $(this).find('.modal-content .modal-title').html(button.data('title'));
+
+    $.ajax({
+        method   : 'GET',
+        url      : button.data('source'),
+        data     : $(this).serialize(),
+        dataType : 'json',
+        success  : function(data, event) {
+            $('#project_name').val(data.project_name);
+            $('#repository_url').val(data.repository_url);
+        },
+        error: function(request, status, error) {
+
+            var data = JSON.parse(request.responseText);
+
+            if (data.error !== undefined) {
+
+                alert(data.error);
+
+                return;
+            } 
+          
+            alert(error);
+        }
+    });
+});
+
+$('#resetPasswordForm').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget);
+
+    $(this).find('.modal-dialog form').attr('action', button.data('action'));
+});
+
+$('#updateUserForm').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget);
+
+    $(this).find('.modal-dialog form').attr('action', button.data('action'));
+
+    $.ajax({
+        method   : 'GET',
+        url      : button.data('source'),
+        data     : $(this).serialize(),
+        dataType : 'json',
+        success  : function(data, event) {
+            $('#user_name').val(data.user_name);
+            $('#user_email').val(data.user_email);
+            $('#is_superuser').attr('checked', data.is_superuser);
+        },
+        error: function(request, status, error) {
+
+            var data = JSON.parse(request.responseText);
+
+            if (data.error !== undefined) {
+
+                alert(data.error);
+
+                return;
+            } 
+          
+            alert(error);
+        }
+    });
+});
+
+$('#changePassword form, #projectForm form, #addUserForm form, #updateUserForm form, #resetPasswordForm form').bootstrap3Validate(function(e, data) {
 
     e.preventDefault();
 
     $.ajax({
         method   : 'POST',
-        url      : '/password/change/',
-        data     : data,
+        url      : $(this).attr('action'),
+        data     : $(this).serialize(),
         dataType : 'json',
         success  : function(data, event) {
             location.reload(true);
@@ -69,34 +140,3 @@ $('#changePassword form').bootstrap3Validate(function(e, data) {
 
     return false
 });
-
-$('#addProject form').bootstrap3Validate(function(e, data) {
-
-    e.preventDefault();
-
-    $.ajax({
-        method   : 'POST',
-        url      : '/project/add/',
-        data     : data,
-        dataType : 'json',
-        success  : function(data, event) {
-            location.reload(true);
-        },
-        error: function(request, status, error) {
-
-            var data = JSON.parse(request.responseText);
-
-            if (data.error !== undefined) {
-
-                alert(data.error);
-
-                return;
-            } 
-          
-            alert(error);
-        }
-    });
-
-    return false
-});
-

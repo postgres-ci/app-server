@@ -4,10 +4,7 @@ entrypoint:
   - /sbin/init
 commands:
   - go version
-  - go get -u github.com/FiloSottile/gvt
-  - gvt restore
-  - mkdir -p /go/src/github.com/postgres-ci/app-server
-  - cp -r . /go/src/github.com/postgres-ci/app-server/
+  - sh test_setup.sh
   - echo ==== Tests ====
 tests:
   - go test -cover -v github.com/postgres-ci/app-server/src/app/models/webhooks/common

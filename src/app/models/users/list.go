@@ -11,13 +11,13 @@ import (
 )
 
 type User struct {
-	ID          int32     `json:"user_id"`
-	Name        string    `json:"user_name"`
-	Login       string    `json:"user_login"`
-	Email       string    `json:"user_email"`
-	IsSuperuser bool      `json:"is_superuser"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
+	ID          int32     `db:"user_id"      json:"user_id"`
+	Name        string    `db:"user_name"    json:"user_name"`
+	Login       string    `db:"user_login"   json:"user_login"`
+	Email       string    `db:"user_email"   json:"user_email"`
+	IsSuperuser bool      `db:"is_superuser" json:"is_superuser"`
+	CreatedAt   time.Time `db:"created_at"   json:"created_at"`
+	UpdatedAt   time.Time `db:"updated_at"   json:"updated_at"`
 }
 
 type Users []User

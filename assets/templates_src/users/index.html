@@ -28,21 +28,36 @@
                     <th width="210px">created at</th>
                     <th width="210px">updated at</th>
                     {% if CurrentUser.IsSuperuser %}
-                    <th width="150px">-</th>
+                    <th width="250px">-</th>
                     {% endif %}
                 </tr>
                 {% for user in users %}
                 <tr>
                     <td>{{ user.ID }}</td>
-                    <td>{{ user.Name }}</td>
+                    <td>{{ user.Name }} {% if user.IsSuperuser %}(superuser){% endif %}</td>
                     <td>{{ user.Login }}</td>
                     <td>{{ user.Email }}</td>
                     <td>{{ user.CreatedAt | time:"Mon, 02 Jan 2006 15:04:05 -0700" }}</td>
                     <td>{{ user.UpdatedAt | time:"Mon, 02 Jan 2006 15:04:05 -0700" }}</td>
                     {% if CurrentUser.IsSuperuser %}
                     <td>
-                        <a href="#"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>edit</a>
+                        <a href="#" 
+                        data-toggle="modal" 
+                        data-target="#updateUserForm" 
+                        data-action="/users/update/{{ user.ID }}/"
+                        data-source="/users/get/{{ user.ID }}/"
+                        ><i class="fa fa-pencil-square-o" aria-hidden="true"></i>edit</a>
+
+                        {% if user.ID != CurrentUser.ID %}
+                        <a href="#" 
+                        data-toggle="modal" 
+                        data-target="#resetPasswordForm" 
+                        data-action="/password/reset/{{ user.ID }}/"
+                        ><i class="fa fa-refresh" aria-hidden="true"></i>reset password</a>
+                        {% endif %}
+                        {% if !user.IsSuperuser %}
                         <a href="#" data-toggle="modal" data-target="#confirmAction" data-action="/users/delete/{{ user.ID }}/"><i class="fa fa-trash" aria-hidden="true"></i>delete</a>
+                        {% endif %}
                     </td>
                     {% endif %}
                 </tr>
@@ -52,12 +67,16 @@
     </div>
     <div class="box-footer clearfix">
         {% if CurrentUser.IsSuperuser %}
-        <button type="submit" data-toggle="modal" data-target="#addUser" class="btn btn-primary">Add user</button>
+        <button type="submit" 
+         data-toggle="modal"
+         data-target="#addUserForm" 
+         class="btn btn-primary">Add user</button>
         {% endif %} {% endverbatim %} {% include "../internal/pagination.html" %}
     </div>
     {% verbatim %} {% if CurrentUser.IsSuperuser %}
-    <div class="modal fade" id="addUser" tabindex="-1" role="dialog">
+    <div class="modal fade" id="addUserForm" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
+            <form method="post" action="/users/add/">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -66,19 +85,19 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="message-text" class="control-label">user name:</label>
-                        <input type="text" name="user_name" class="form-control">
+                        <input type="text" name="name" class="form-control" data-title="Enter user name" required>
                     </div>
                     <div class="form-group">
                         <label for="message-text" class="control-label">email:</label>
-                        <input type="email" name="email" class="form-control">
+                        <input type="email" name="email" class="form-control" data-title="Enter email" required>
                     </div>
                     <div class="form-group">
                         <label for="message-text" class="control-label">login:</label>
-                        <input type="text" name="login" class="form-control">
+                        <input type="text" name="login" class="form-control" data-title="Enter login" required>
                     </div>
                     <div class="form-group">
                         <label for="message-text" class="control-label">password:</label>
-                        <input type="password" name="password" class="form-control" id="password">
+                        <input type="password" name="password" class="form-control" id="password" data-title="Enter password" required>
                     </div>
                     <div class="form-group">
                         <label><input type="checkbox" name="is_superuser"> superuser</label>
@@ -86,9 +105,75 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
-                    <button type="submit" class="btn btn-primary">add</button>
+                    <button type="submit" class="btn btn-primary">submit</button>
                 </div>
             </div>
+            </form>
+        </div>
+    </div>
+
+
+        <div class="modal fade" id="updateUserForm" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <form method="post" action="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Edit user</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="message-text" class="control-label">user name:</label>
+                        <input type="text" name="name" id="user_name" class="form-control" data-title="Enter user name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="control-label">email:</label>
+                        <input type="email" name="email" id="user_email" class="form-control" data-title="Enter email" required>
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" id="is_superuser" name="is_superuser"> superuser</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+                    <button type="submit" class="btn btn-primary">submit</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+
+
+        <div class="modal fade" id="resetPasswordForm" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <form method="post" action="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Reset password</h4>
+                </div>
+                <div class="modal-body">
+
+
+
+             <div class="form-group">
+                        <label for="message-text" class="control-label">new password:</label>
+                        <input type="password" name="new_password" class="form-control" data-title="Enter password" required>
+                    </div>
+
+
+
+                                 <div class="form-group">
+                        <label for="message-text" class="control-label">confirm password:</label>
+                        <input type="password" name="confirm_password" class="form-control" data-title="Enter password" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+                    <button type="submit" class="btn btn-primary">submit</button>
+                </div>
+            </div>
+            </form>
         </div>
     </div>
     {% endif %} {% endverbatim %}
