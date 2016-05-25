@@ -2,24 +2,46 @@
 <h1>Builds</h1> {% endblock %}
     {% block breadcrumb%}
         <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        {% verbatim %}<li><a href="/project/{{ build.ProjectID}}/builds/">{{ build.ProjectName}} builds</a></li>{% endverbatim %}
-        <li class="active">build</li>
+        {% verbatim %}
+        <li><a href="/project/{{ build.ProjectID}}/builds/">{{ build.ProjectName}}</a></li>
+        <li class="active">{{ build.CommitSHA }}</li>
+        {% endverbatim %}
     {% endblock %} {% block content%} {% verbatim %}
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">Commit {{ build.CommitSHA }}</h3>
-            <div class="box-tools">{{ build.CommittedAt | time:"Mon, 02 Jan 2006 15:04:05 -0700"}}</div>
+            <div class="box-tools">{{ build.CreatedAt | time:"Mon, 02 Jan 2006 15:04:05 -0700"}}</div>
         </div>
         <div class="box-body">
+            <strong>Status: </strong> 
+            {% if build.Status == "success" %}
+            <span class="label label-success">
+            {% elif build.Status == "pending" %}
+            <span class="label label-warning">
+            {% elif build.Status == "failed" %}
+            <span class="label label-danger">
+            {% else %}
+            <span class="label label-primary">
+            {% endif %}
+            {{ build.Status }}</span>
+
+            <br>
             <strong>Branch:</strong> <a href="/project/{{ build.ProjectID }}/builds/branch/{{ build.BranchID }}/">{{ build.Branch }}</a><br>
             <strong>Author:</strong> {{ build.AuthorName }} ({{ build.AuthorEmail }})<br>
             {% if build.AuthorName != build.CommitterName %}<br>
                 <strong>Commiter:</strong> {{ build.CommitterName }} ({{ build.CommitterEmail }})<br>
             {% endif %}
+            <strong>Commited at:</strong> {{ build.CommittedAt | time:"Mon, 02 Jan 2006 15:04:05 -0700"}}<br>
             <strong>Message:</strong>
         <pre>{{ build.CommitMessage }}</pre>
     </div>
 </div>
+
+{% if !(build.Status == "failed" or build.Status == "success") %}
+<script type="text/javascript">
+    setTimeout(function() { location.reload(true); }, 10000);
+</script>
+{% endif %}
 
 {% if build.Error %}
 <div class="box box-danger box-solid">
@@ -57,7 +79,7 @@
     <pre>{{ part.Output }}</pre>
 
     {% if part.Tests %}
-    <table class="table table-striped">
+    <table class="table table-striped" id="tests_{{ forloop.Counter }}">
         <thead>
             <tr>
                 <th>Function</th>
@@ -83,6 +105,9 @@
             {% endfor %}
         </tbody>
     </table>
+    {% if part.TestsLen() > 50 %}
+    <script>$('#tests_{{ forloop.Counter }}').DataTable({'pageLength':50, 'lengthChange': false});</script>
+    {% endif %}
     {% endif %}
 </div>
 </div>
