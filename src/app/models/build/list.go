@@ -2,6 +2,7 @@ package build
 
 import (
 	log "github.com/Sirupsen/logrus"
+	"github.com/postgres-ci/app-server/src/common/errors"
 	"github.com/postgres-ci/app-server/src/env"
 
 	"encoding/json"
@@ -65,20 +66,40 @@ func (b *Branches) Scan(src interface{}) error {
 }
 
 type list struct {
-	Branches Branches `db:"branches"`
-	Total    int32    `db:"total"`
-	Items    Items    `db:"items"`
+	ProjectID   int32    `db:"project_id"`
+	ProjectName string   `db:"project_name"`
+	Branches    Branches `db:"branches"`
+	Total       int32    `db:"total"`
+	Items       Items    `db:"items"`
 }
 
 func List(projectID, branchID, limit, offset int32) (*list, error) {
 
 	var list list
 
-	err := env.Connect().Get(&list, `SELECT total, branches, items FROM build.list($1, $2, $3, $4)`, projectID, branchID, limit, offset)
+	err := env.Connect().Get(&list, `
+		SELECT 
+			total, 
+			project_id, 
+			project_name, 
+			branches, 
+			items
+		FROM build.list($1, $2, $3, $4)
+		`,
+		projectID,
+		branchID,
+		limit,
+		offset,
+	)
 
 	if err != nil {
 
-		log.Errorf("Error when fetching list of builds: %v", err)
+		err := errors.Wrap(err)
+
+		if err.(*errors.Error).IsFatal() {
+
+			log.Errorf("Error when fetching list of builds: %v", err)
+		}
 
 		return nil, err
 	}

@@ -1,6 +1,6 @@
 address   : ":8888"
 loglevel  : "info" # info/warning/error
-templates : "/opt/postgres-ci/app-server/templates/"
+templates : "assets/templates/"
 
 connect:
   host: "/var/run/postgresql"

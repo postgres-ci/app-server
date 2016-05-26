@@ -140,3 +140,7 @@ $('#changePassword form, #projectForm form, #addUserForm form, #updateUserForm f
 
     return false
 });
+
+$('#project_branches').change(function() {
+    window.location.href = $(this).val();
+});

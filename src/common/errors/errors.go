@@ -24,6 +24,14 @@ func (e *Error) Error() string {
 
 func Wrap(err error) error {
 
+	if err == sql.ErrNoRows {
+
+		return &Error{
+			Code:    http.StatusNotFound,
+			Message: "Not found",
+		}
+	}
+
 	if err, ok := err.(*pq.Error); ok {
 
 		switch err.Code.Name() {
@@ -71,9 +79,11 @@ func IsNotFound(err error) bool {
 		return true
 	}
 
-	if err, ok := err.(*pq.Error); ok && err.Code.Name() == "no_data_found" {
-
-		return true
+	switch err.(type) {
+	case *pq.Error:
+		return err.(*pq.Error).Code.Name() == "no_data_found"
+	case *Error:
+		return err.(*Error).Code == http.StatusNotFound
 	}
 
 	return false

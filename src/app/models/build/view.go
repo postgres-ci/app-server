@@ -25,6 +25,7 @@ type build struct {
 	CommitterEmail string    `db:"committer_email"`
 	AuthorName     string    `db:"author_name"`
 	AuthorEmail    string    `db:"author_email"`
+	CreatedAt      time.Time `db:"created_at"`
 	Parts          Parts     `db:"parts"`
 }
 
@@ -37,6 +38,11 @@ type Part struct {
 	StartedAt  time.Time `json:"started_at"`
 	FinishedAt time.Time `json:"finished_at"`
 	Tests      []Test    `json:"tests"`
+}
+
+func (p Part) TestsLen() int {
+
+	return len(p.Tests)
 }
 
 type Parts []Part
@@ -72,7 +78,28 @@ func View(buildID int32) (*build, error) {
 
 	var build build
 
-	err := env.Connect().Get(&build, `SELECT * FROM build.view($1)`, buildID)
+	err := env.Connect().Get(&build, `
+		SELECT 
+			project_id,
+			project_name,
+			branch_id,
+			branch_name,
+			config, 
+			error,
+			status,
+			commit_sha,
+			commit_message,
+			committed_at,
+			committer_name,
+			committer_email,
+			author_name,
+			author_email,
+			created_at,
+			parts
+		FROM build.view($1)
+		`,
+		buildID,
+	)
 
 	if err != nil {
 

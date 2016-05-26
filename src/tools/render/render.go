@@ -112,9 +112,9 @@ func JSONError(c *http200ok.Context, code int, format string, a ...interface{}) 
 	c.Response.WriteHeader(code)
 
 	return json.NewEncoder(c.Response).Encode(struct {
-		Success bool        `json:"success"`
-		Code    int         `json:"code"`
-		Error   interface{} `json:"error"`
+		Success bool   `json:"success"`
+		Code    int    `json:"code"`
+		Error   string `json:"error"`
 	}{
 		Success: false,
 		Code:    code,

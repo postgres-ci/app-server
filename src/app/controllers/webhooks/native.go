@@ -13,6 +13,8 @@ import (
 
 func nativeHandler(c *http200ok.Context) {
 
+	defer c.Request.Body.Close()
+
 	log.Debugf("Webhook [native]. Token: %s, event: %s",
 		c.Request.Header.Get("X-Token"),
 		c.Request.Header.Get("X-Event"),

@@ -23,9 +23,12 @@ func buildsHandler(c *http200ok.Context) {
 	}
 
 	render.HTML(c, "project/builds.html", render.Context{
-		"branches":   list.Branches,
-		"total":      list.Total,
-		"items":      list.Items,
-		"pagination": pagination.New(c, list.Total, perPage),
+		"branches":    list.Branches,
+		"BranchID":    params.ToInt32(c, "BranchID"),
+		"ProjectID":   list.ProjectID,
+		"ProjectName": list.ProjectName,
+		"total":       list.Total,
+		"items":       list.Items,
+		"pagination":  pagination.New(c, list.Total, perPage),
 	})
 }
