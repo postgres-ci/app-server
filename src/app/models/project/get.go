@@ -11,8 +11,8 @@ import (
 )
 
 type user struct {
-	Id   int32  `json:"user_id"`
-	Name string `json:"user_name"`
+	Id   int32  `db:"user_id"   json:"user_id"`
+	Name string `db:"user_name" json:"user_name"`
 }
 
 type users []user

@@ -18,7 +18,7 @@
                 {% for item in items %}
                 <tr>
                     <td>
-                        <a href="/project/{{ item.ProjectID }}/builds/">{{ item.ProjectName }}</a>
+                        <a href="/project-{{ item.ProjectID }}/builds/">{{ item.ProjectName }}</a>
                         <br> {{ item.ProjectToken }}
                     </td>
                     <td>
@@ -35,7 +35,7 @@
                     <span class="label label-primary">
                     {% endif %}
                     {{ item.Status }}</span> {% if item.LastBuildID %} (
-                        <a href="/project/{{ item.ProjectID }}/build/{{ item.LastBuildID }}/">{{ item.CommitSHA | truncatechars:15 }}</a>) {% if item.FinishedAt %} {{ item.FinishedAt | naturaltime }} {% else %} started at {{ item.StartedAt | naturaltime }} {% endif %} {% endif %}
+                        <a href="/project-{{ item.ProjectID }}/build-{{ item.LastBuildID }}/">{{ item.CommitSHA | truncatechars:15 }}</a>) {% if item.FinishedAt %} {{ item.FinishedAt | naturaltime }} {% else %} started at {{ item.StartedAt | naturaltime }} {% endif %} {% endif %}
                     </td>
                     {% if CurrentUser.IsSuperuser %}
                     <td>
@@ -44,7 +44,7 @@
                         data-target="#projectForm" 
                         data-title="Edit project"
                         data-action="/project/update/{{ item.ProjectID }}/"
-                        data-source="/project/{{ item.ProjectID }}/get/"
+                        data-source="/project-{{ item.ProjectID }}/get/"
                         ><i class="fa fa-pencil-square-o" aria-hidden="true"></i>edit</a>
                         <a href="#" data-toggle="modal" data-target="#confirmAction" data-action="/project/delete/{{ item.ProjectID }}/"><i class="fa fa-trash" aria-hidden="true"></i>delete</a>
                     </td>
@@ -62,6 +62,7 @@
         data-target="#projectForm" 
         data-action="/project/add/"
         data-title="Add project"
+        data-source="/project/possible-owners/"
         class="btn btn-primary"
     >Add project</button>
     </div>
@@ -81,21 +82,20 @@
                         <label for="message-text" class="control-label">name:</label>
                         <input type="text" name="name" id="project_name" class="form-control" data-title="Please enter a project name" required>
                     </div>
-                    <input type="hidden" value="{{ CurrentUser.ID }}" name="owner_id">
-                    <!--div class="form-group">
+                    <div class="form-group">
                         <label for="message-text" class="control-label">owner:</label>
                         <select class="form-control" id="select_users" name="owner_id">
                             <option value="{{ CurrentUser.ID }}">{{ CurrentUser.Name }}</option>
                         </select>
-                    </div-->
+                    </div>
                     <div class="form-group">
                         <label for="message-text" class="control-label">repository url</label>
                         <input type="text" name="url" id="repository_url" class="form-control" data-title="Please enter a repository url" required>
                     </div>
-                    <!--div class="form-group">
-                    <label for="message-text" class="control-label">github secret</label>
-                    <input type="text" name="github_secret" class="form-control">
-                </div-->
+                    <div class="form-group">
+                    <label for="message-text" class="control-label">github secret (if necessary)</label>
+                    <input type="text" id="github_secret" name="github_secret" class="form-control">
+                </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">close</button>

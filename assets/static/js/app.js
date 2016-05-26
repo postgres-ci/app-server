@@ -37,6 +37,10 @@ $('#confirmAction').find('.modal-content form').on('submit', function(event) {
 });
 
 $('#changePassword, #userForm, #projectForm').on('hide.bs.modal', function (event) {
+    $('.has-error', this).removeClass('has-error').find('input,textarea').tooltip('destroy');
+    $('.alert').hide();
+    $("[role='tooltip']", this).tooltip('destroy');
+
     $(this).find('.modal-dialog form').trigger("reset");
 });
 
@@ -50,17 +54,38 @@ $('#projectForm').on('show.bs.modal', function (event) {
     $.ajax({
         method   : 'GET',
         url      : button.data('source'),
-        data     : $(this).serialize(),
         dataType : 'json',
         success  : function(data, event) {
-            $('#project_name').val(data.project_name);
-            $('#repository_url').val(data.repository_url);
+
+            var select = [];
+
+            if (button.data('source') == '/project/possible-owners/') {
+
+                data.forEach(function(item, i, arr) {
+                    select.push('<option value="' + item.user_id + '">' + item.user_name + '</option>');
+                });
+            } else {
+
+                $('#project_name').val(data.project_name);
+                $('#repository_url').val(data.repository_url);
+                $('#github_secret').val(data.github_secret);
+
+                data.possible_owners.forEach(function(item, i, arr) {
+                    var selected = '';
+                    if (typeof(data.project_owner_id) !== undefined && data.project_owner_id == item.user_id) {
+                        selected = 'selected';
+                    }
+                    select.push('<option value="' + item.user_id + '" ' + selected + '>' + item.user_name + '</option>');
+                });
+            }
+
+            $('#select_users').html(select.join(""));
         },
         error: function(request, status, error) {
 
             var data = JSON.parse(request.responseText);
 
-            if (data.error !== undefined) {
+            if (typeof(data.error) !== undefined) {
 
                 alert(data.error);
 

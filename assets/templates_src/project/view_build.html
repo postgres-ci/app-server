@@ -3,7 +3,7 @@
     {% block breadcrumb%}
         <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
         {% verbatim %}
-        <li><a href="/project/{{ build.ProjectID}}/builds/">{{ build.ProjectName}}</a></li>
+        <li><a href="/project-{{ build.ProjectID}}/builds/">{{ build.ProjectName}}</a></li>
         <li class="active">{{ build.CommitSHA }}</li>
         {% endverbatim %}
     {% endblock %} {% block content%} {% verbatim %}
@@ -26,7 +26,7 @@
             {{ build.Status }}</span>
 
             <br>
-            <strong>Branch:</strong> <a href="/project/{{ build.ProjectID }}/builds/branch/{{ build.BranchID }}/">{{ build.Branch }}</a><br>
+            <strong>Branch:</strong> <a href="/project-{{ build.ProjectID }}/builds/branch-{{ build.BranchID }}/">{{ build.Branch }}</a><br>
             <strong>Author:</strong> {{ build.AuthorName }} ({{ build.AuthorEmail }})<br>
             {% if build.AuthorName != build.CommitterName %}<br>
                 <strong>Commiter:</strong> {{ build.CommitterName }} ({{ build.CommitterEmail }})<br>

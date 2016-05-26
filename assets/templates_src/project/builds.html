@@ -14,9 +14,9 @@
         <h3 class="box-title">Total: {{ total }}</h3>
         <div class="box-tools"> 
             <select class="form-control" id="project_branches">
-                <option value="/project/{{ ProjectID }}/builds/">branches</option>
+                <option value="/project-{{ ProjectID }}/builds/">branches</option>
                 {% for branch in branches %}
-                    <option value="/project/{{ ProjectID }}/builds/branch/{{ branch.ID }}/" {% if branch.ID == BranchID %}selected{% endif %}>{{ branch.Name }}</option>
+                    <option value="/project-{{ ProjectID }}/builds/branch-{{ branch.ID }}/" {% if branch.ID == BranchID %}selected{% endif %}>{{ branch.Name }}</option>
                 {% endfor %}
                 
             </select>
@@ -49,11 +49,11 @@
                                         {{ item.Status }}</span>
                                     </td>
                                     <td>
-                                        <a href="/project/{{ item.ProjectID }}/build/{{ item.BuildID }}/">{{ item.CommitSHA }}</a>
+                                        <a href="/project-{{ item.ProjectID }}/build-{{ item.BuildID }}/">{{ item.CommitSHA }}</a>
                                     </td>
                                     <td>{{ item.CommitMessage | truncatechars:255 }}</td>
                                     <td>
-                                        <a href="/project/{{ item.ProjectID }}/builds/branch/{{ item.BranchID }}/">{{ item.Branch }}</a>
+                                        <a href="/project-{{ item.ProjectID }}/builds/branch-{{ item.BranchID }}/">{{ item.Branch }}</a>
                                     </td>
                                     <td>
                                         {% if item.FinishedAt %}
