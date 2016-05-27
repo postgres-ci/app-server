@@ -33,14 +33,14 @@ func githubHandler(c *http200ok.Context) {
 
 		if err != nil {
 
-			http.Error(c.Response, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+			render.JSONError(c, http.StatusInternalServerError, err.Error())
 
 			return
 		}
 
 		if err := json.Unmarshal(source, &push); err != nil {
 
-			http.Error(c.Response, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+			render.JSONError(c, http.StatusBadRequest, err.Error())
 
 			return
 		}
@@ -50,9 +50,9 @@ func githubHandler(c *http200ok.Context) {
 		if err != nil {
 
 			if errors.IsNotFound(err) {
-				http.Error(c.Response, "Project not nound", http.StatusNotFound)
+				render.JSONError(c, http.StatusNotFound, "Project not nound")
 			} else {
-				http.Error(c.Response, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+				render.JSONError(c, http.StatusInternalServerError, err.Error())
 			}
 
 			return
@@ -64,7 +64,7 @@ func githubHandler(c *http200ok.Context) {
 
 			if signature == "" {
 
-				http.Error(c.Response, "Missing X-Hub-Signature header", http.StatusForbidden)
+				render.JSONError(c, http.StatusForbidden, "Missing X-Hub-Signature header")
 
 				return
 			}
@@ -76,7 +76,7 @@ func githubHandler(c *http200ok.Context) {
 
 			if !hmac.Equal([]byte(signature[5:]), []byte(expectedMAC)) {
 
-				http.Error(c.Response, "HMAC verification failed", http.StatusForbidden)
+				render.JSONError(c, http.StatusForbidden, "HMAC verification failed")
 
 				return
 			}
@@ -84,14 +84,14 @@ func githubHandler(c *http200ok.Context) {
 
 		if err := github.Push(push); err != nil {
 
-			http.Error(c.Response, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+			render.JSONError(c, http.StatusInternalServerError, err.Error())
 
 			return
 		}
 
 	case "":
 
-		http.Error(c.Response, "Missing X-GitHub-Event header", http.StatusBadRequest)
+		render.JSONError(c, http.StatusBadRequest, "Missing X-GitHub-Event header")
 
 		return
 

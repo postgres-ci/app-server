@@ -1,6 +1,7 @@
 package users
 
 import (
+	"github.com/postgres-ci/app-server/src/app/models/auth"
 	"github.com/postgres-ci/app-server/src/app/models/users"
 	"github.com/postgres-ci/app-server/src/common/errors"
 	"github.com/postgres-ci/app-server/src/tools/params"
@@ -11,6 +12,15 @@ import (
 )
 
 func getHandler(c *http200ok.Context) {
+
+	currentUser := c.Get("CurrentUser").(*auth.User)
+
+	if !currentUser.IsSuperuser {
+
+		render.JSONError(c, http.StatusForbidden, "Access denied")
+
+		return
+	}
 
 	user, err := users.Get(params.ToInt32(c, "UserID"))
 
