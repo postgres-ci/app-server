@@ -2,6 +2,7 @@ package project
 
 import (
 	"github.com/postgres-ci/app-server/src/app/models/build"
+	"github.com/postgres-ci/app-server/src/common/errors"
 	"github.com/postgres-ci/app-server/src/tools/limit"
 	"github.com/postgres-ci/app-server/src/tools/params"
 	"github.com/postgres-ci/app-server/src/tools/render"
@@ -17,7 +18,14 @@ func buildsHandler(c *http200ok.Context) {
 
 	if err != nil {
 
-		render.InternalServerError(c, err)
+		if errors.IsNotFound(err) {
+
+			render.NotFound(c)
+
+		} else {
+
+			render.InternalServerError(c, err)
+		}
 
 		return
 	}

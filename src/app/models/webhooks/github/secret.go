@@ -10,7 +10,7 @@ func Secret(fullName string) (string, error) {
 
 	var secret string
 
-	if err := env.Connect().Get(&secret, "SELECT secret FROM project.github_secret($1)", fullName); err != nil {
+	if err := env.Connect().Get(&secret, "SELECT secret FROM project.get_github_secret($1)", fullName); err != nil {
 
 		err := errors.Wrap(err)
 

@@ -12,15 +12,16 @@ func Index(server *http200ok.Server) {
 
 		items, err := project.List()
 
-		if err == nil {
+		if err != nil {
 
-			render.HTML(c, "index.html", render.Context{
-				"items": items,
-			})
+			render.InternalServerError(c, err)
 
 			return
 		}
 
-		render.HTML(c, "index.html", nil)
+		render.HTML(c, "index.html", render.Context{
+			"items": items,
+		})
+
 	})
 }

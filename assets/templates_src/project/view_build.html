@@ -105,8 +105,8 @@
             {% endfor %}
         </tbody>
     </table>
-    {% if part.TestsLen() > 50 %}
-    <script>$('#tests_{{ forloop.Counter }}').DataTable({'pageLength':50, 'lengthChange': false});</script>
+    {% if part.TestsLen() > 20 %}
+    <script>$('#tests_{{ forloop.Counter }}').DataTable({'pageLength':20, 'lengthChange': false});</script>
     {% endif %}
     {% endif %}
 </div>
