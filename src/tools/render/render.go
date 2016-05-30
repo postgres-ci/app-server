@@ -100,11 +100,9 @@ func JSON(c *http200ok.Context, v interface{}) error {
 func JSONok(c *http200ok.Context) {
 
 	JSON(c, struct {
-		Success bool   `json:"success"`
-		Message string `json:"message"`
+		Success bool `json:"success"`
 	}{
 		Success: true,
-		Message: "OK",
 	})
 }
 func JSONError(c *http200ok.Context, code int, format string, a ...interface{}) error {
