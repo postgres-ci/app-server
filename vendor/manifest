@@ -15,6 +15,12 @@
 			"path": "/spew"
 		},
 		{
+			"importpath": "github.com/erikstmartin/go-testdb",
+			"repository": "https://github.com/erikstmartin/go-testdb",
+			"revision": "8d10e4a1bae52cd8b81ffdec3445890d6dccab3d",
+			"branch": "master"
+		},
+		{
 			"importpath": "github.com/flosch/pongo2",
 			"repository": "https://github.com/flosch/pongo2",
 			"revision": "7f5515449ea9bbeb00256d9cbb654c556e7d0146",
@@ -44,6 +50,13 @@
 			"revision": "792786c7400a136282c1664665ae0a8db921c6c2",
 			"branch": "master",
 			"path": "/difflib"
+		},
+		{
+			"importpath": "github.com/postgres-ci/hooks/git",
+			"repository": "https://github.com/postgres-ci/hooks",
+			"revision": "63c102f6441e1c74c23b7b9ad284de3b4b2cf6f9",
+			"branch": "master",
+			"path": "/git"
 		},
 		{
 			"importpath": "github.com/postgres-ci/http200ok",

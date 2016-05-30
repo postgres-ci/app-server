@@ -7,6 +7,7 @@ commands:
   - sh test_setup.sh
   - echo ==== Tests ====
 tests:
+  - go test -cover -v github.com/postgres-ci/app-server/src/app
   - go test -cover -v github.com/postgres-ci/app-server/src/app/models/webhooks/common
   - go test -cover -v github.com/postgres-ci/app-server/src/app/models/webhooks/github
   - go test -cover -v github.com/postgres-ci/app-server/src/tools/limit
