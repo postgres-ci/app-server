@@ -50,8 +50,10 @@ func githubHandler(c *http200ok.Context) {
 		if err != nil {
 
 			if errors.IsNotFound(err) {
+
 				render.JSONError(c, http.StatusNotFound, "Project not nound")
 			} else {
+
 				render.JSONError(c, http.StatusInternalServerError, err.Error())
 			}
 
