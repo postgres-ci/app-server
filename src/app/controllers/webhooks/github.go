@@ -89,6 +89,12 @@ func githubHandler(c *http200ok.Context) {
 			return
 		}
 
+	case "ping":
+
+		render.JSON(c, "pong")
+
+		return
+
 	case "":
 
 		render.JSONError(c, http.StatusBadRequest, "Missing X-GitHub-Event header")

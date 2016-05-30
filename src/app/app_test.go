@@ -12,10 +12,12 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"bytes"
+	"database/sql/driver"
 	"fmt"
 	"log"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 )
 
@@ -104,5 +106,34 @@ func TestAuthentication(t *testing.T) {
 				assert.Equal(t, "/login/", response.Header.Get("Location"))
 			}
 		}
+	}
+
+	req, _ := http.NewRequest("GET", server.URL+"/users/", nil)
+	req.Header.Set("Cookie", fmt.Sprintf("%s=cookie", auth.CookieName))
+
+	testdb.SetQueryWithArgsFunc(func(query string, args []driver.Value) (result driver.Rows, err error) {
+
+		switch true {
+
+		case strings.Contains(query, "auth.get_user"):
+			return testdb.RowsFromCSVString(
+				[]string{"user_id", "user_name", "user_login", "user_email", "is_superuser", "created_at"},
+				"1,user,login,email@email.com,true,2016-05-30T11:02:41+03:00",
+			), nil
+
+		case strings.Contains(query, "users.list"):
+
+			return testdb.RowsFromCSVString(
+				[]string{"total", "users"},
+				"42,[]",
+			), nil
+		}
+
+		return nil, fmt.Errorf("SQL_ERROR")
+	})
+
+	if response, err := (&http.Transport{}).RoundTrip(req); assert.NoError(t, err) {
+
+		assert.Equal(t, http.StatusOK, response.StatusCode)
 	}
 }
