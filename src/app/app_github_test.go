@@ -6,6 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"bytes"
+	"database/sql"
 	"database/sql/driver"
 	"encoding/json"
 	"fmt"
@@ -45,7 +46,7 @@ func TestGitHubPush(t *testing.T) {
 	req, _ := http.NewRequest("POST", server.URL+"/webhooks/github/", bytes.NewReader([]byte(PushJson)))
 	req.Header.Set("X-GitHub-Event", "push")
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("X-Hub-Signature", PushJson)
+	req.Header.Set("X-Hub-Signature", PushSha)
 
 	testdb.SetExecWithArgsFunc(func(query string, args []driver.Value) (driver.Result, error) {
 
@@ -107,6 +108,146 @@ func TestGitHubPush(t *testing.T) {
 			if err := json.NewDecoder(response.Body).Decode(&resp); assert.NoError(t, err) {
 
 				assert.True(t, resp.Success)
+			}
+		}
+	}
+}
+
+func TestGitHubPushProjectNotFound(t *testing.T) {
+
+	server := httptest.NewServer(CreateApp())
+
+	req, _ := http.NewRequest("POST", server.URL+"/webhooks/github/", bytes.NewReader([]byte(PushJson)))
+	req.Header.Set("X-GitHub-Event", "push")
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("X-Hub-Signature", PushSha)
+
+	testdb.SetQueryWithArgsFunc(func(query string, args []driver.Value) (result driver.Rows, err error) {
+
+		if strings.Contains(query, "project.get_github_secret") {
+
+			return nil, sql.ErrNoRows
+		}
+
+		return nil, fmt.Errorf("SQL_ERROR")
+	})
+
+	if response, err := (&http.Client{}).Do(req); assert.NoError(t, err) {
+
+		if assert.Equal(t, http.StatusNotFound, response.StatusCode) {
+
+			var resp struct {
+				Success bool   `json:"success"`
+				Code    int    `json:"code"`
+				Error   string `json:"error"`
+			}
+			if err := json.NewDecoder(response.Body).Decode(&resp); assert.NoError(t, err) {
+
+				if assert.False(t, resp.Success) {
+
+					assert.Equal(t, "Project not nound", resp.Error)
+				}
+			}
+		}
+	}
+}
+
+func TestGitHubPushMissingSignature(t *testing.T) {
+
+	server := httptest.NewServer(CreateApp())
+
+	req, _ := http.NewRequest("POST", server.URL+"/webhooks/github/", bytes.NewReader([]byte(PushJson)))
+	req.Header.Set("X-GitHub-Event", "push")
+	req.Header.Set("Content-Type", "application/json")
+
+	testdb.SetQueryWithArgsFunc(func(query string, args []driver.Value) (result driver.Rows, err error) {
+
+		if strings.Contains(query, "project.get_github_secret") {
+
+			if assert.Len(t, args, 1) {
+
+				assert.Equal(t, "postgres-ci/http200ok", args[0].(string))
+			}
+
+			var secret [][]driver.Value
+
+			secret = append(secret, []driver.Value{"SeCrEt"})
+
+			return testdb.RowsFromSlice(
+				[]string{"secret"},
+				secret,
+			), nil
+		}
+
+		return nil, fmt.Errorf("SQL_ERROR")
+	})
+
+	if response, err := (&http.Client{}).Do(req); assert.NoError(t, err) {
+
+		if assert.Equal(t, http.StatusForbidden, response.StatusCode) {
+
+			var resp struct {
+				Success bool   `json:"success"`
+				Code    int    `json:"code"`
+				Error   string `json:"error"`
+			}
+			if err := json.NewDecoder(response.Body).Decode(&resp); assert.NoError(t, err) {
+
+				if assert.False(t, resp.Success) {
+
+					assert.Equal(t, "Missing X-Hub-Signature header", resp.Error)
+				}
+			}
+		}
+	}
+}
+
+func TestGitHubPushInvalidSecret(t *testing.T) {
+
+	server := httptest.NewServer(CreateApp())
+
+	req, _ := http.NewRequest("POST", server.URL+"/webhooks/github/", bytes.NewReader([]byte(PushJson)))
+	req.Header.Set("X-GitHub-Event", "push")
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("X-Hub-Signature", PushSha)
+
+	testdb.SetQueryWithArgsFunc(func(query string, args []driver.Value) (result driver.Rows, err error) {
+
+		if strings.Contains(query, "project.get_github_secret") {
+
+			if assert.Len(t, args, 1) {
+
+				assert.Equal(t, "postgres-ci/http200ok", args[0].(string))
+			}
+
+			var secret [][]driver.Value
+
+			secret = append(secret, []driver.Value{"InvalidSecret"})
+
+			return testdb.RowsFromSlice(
+				[]string{"secret"},
+				secret,
+			), nil
+		}
+
+		return nil, fmt.Errorf("SQL_ERROR")
+	})
+
+	if response, err := (&http.Client{}).Do(req); assert.NoError(t, err) {
+
+		if assert.Equal(t, http.StatusForbidden, response.StatusCode) {
+
+			var resp struct {
+				Success bool   `json:"success"`
+				Code    int    `json:"code"`
+				Error   string `json:"error"`
+			}
+			if err := json.NewDecoder(response.Body).Decode(&resp); assert.NoError(t, err) {
+
+				if assert.False(t, resp.Success) {
+
+					assert.Equal(t, "HMAC verification failed", resp.Error)
+				}
 			}
 		}
 	}
