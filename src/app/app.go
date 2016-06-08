@@ -11,11 +11,11 @@ import (
 	"github.com/postgres-ci/http200ok"
 
 	"net/http"
+	"os"
+	"runtime"
 )
 
 func New(config common.Config) *app {
-
-	log.Debugf("Connect to postgresql server. DSN(%s)", config.Connect.DSN())
 
 	connect, err := sqlx.Connect("postgres", config.Connect.DSN())
 
@@ -23,6 +23,8 @@ func New(config common.Config) *app {
 
 		log.Fatalf("Could not connect to database server: %v", err)
 	}
+
+	log.Debugf("Connect to postgresql server. DSN(%s)", config.Connect.DSN())
 
 	env.SetConnect(connect)
 
@@ -45,6 +47,9 @@ type app struct {
 func (app *app) Run() {
 
 	routines.Run()
+
+	log.Infof("Postgres-CI app-server running on address: %s, pid: %d", app.address, os.Getpid())
+	log.Debugf("Runtime version: %s", runtime.Version())
 
 	log.Fatal(http.ListenAndServe(app.address, app.Server))
 }

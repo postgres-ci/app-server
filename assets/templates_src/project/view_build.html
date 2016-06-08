@@ -28,7 +28,7 @@
             <br>
             <strong>Branch:</strong> <a href="/project-{{ build.ProjectID }}/builds/branch-{{ build.BranchID }}/">{{ build.Branch }}</a><br>
             <strong>Author:</strong> {{ build.AuthorName }} ({{ build.AuthorEmail }})<br>
-            {% if build.AuthorName != build.CommitterName %}<br>
+            {% if build.AuthorName != build.CommitterName %}
                 <strong>Commiter:</strong> {{ build.CommitterName }} ({{ build.CommitterEmail }})<br>
             {% endif %}
             <strong>Commited:</strong> {{ build.CommittedAt | time:"Mon, 02 Jan 2006 15:04:05 -0700"}}<br>
@@ -106,7 +106,7 @@
         </tbody>
     </table>
     {% if part.TestsLen() > 20 %}
-    <script>$('#tests_{{ forloop.Counter }}').DataTable({'pageLength':20, 'lengthChange': false});</script>
+    <script>$('#tests_{{ forloop.Counter }}').DataTable({'pageLength':20, 'lengthChange': false, 'sort' : false});</script>
     {% endif %}
     {% endif %}
 </div>
