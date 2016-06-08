@@ -8,6 +8,13 @@
             <li{% if page == "users"%} class="active" {% endif %}>
             	<a href="/users/"><i class="fa fa-users"></i> <span>Users</span></a>
             </li>
+            {% verbatim %}
+            {% if CurrentUser.IsSuperuser %}
+            <li>
+                <a href="#" data-toggle="modal" data-target="#systemSettings"><i class="fa fa-cogs"></i> <span>Settings</span></a>
+            </li>
+            {% endif %} 
+            {% endverbatim %}
         </ul>
     </section>
 </aside>

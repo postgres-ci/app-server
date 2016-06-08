@@ -36,7 +36,7 @@ $('#confirmAction').find('.modal-content form').on('submit', function(event) {
     return false
 });
 
-$('#changePassword, #userForm, #projectForm').on('hide.bs.modal', function (event) {
+$('#changePassword, #userForm, #projectForm, #systemSettings').on('hide.bs.modal', function (event) {
     $('.has-error', this).removeClass('has-error').find('input,textarea').tooltip('destroy');
     $('.alert').hide();
     $("[role='tooltip']", this).tooltip('destroy');
@@ -136,7 +136,7 @@ $('#updateUserForm').on('show.bs.modal', function (event) {
     });
 });
 
-$('#changePassword form, #projectForm form, #addUserForm form, #updateUserForm form, #resetPasswordForm form').bootstrap3Validate(function(e, data) {
+$('#changePassword form, #projectForm form, #addUserForm form, #updateUserForm form, #resetPasswordForm form, #systemSettings form, #changeNotificationsSettings form').bootstrap3Validate(function(e, data) {
 
     e.preventDefault();
 
