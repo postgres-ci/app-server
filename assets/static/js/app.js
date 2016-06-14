@@ -44,6 +44,44 @@ $('#changePassword, #userForm, #projectForm, #systemSettings').on('hide.bs.modal
     $(this).find('.modal-dialog form').trigger("reset");
 });
 
+$('#changeNotificationsSettings').on('show.bs.modal', function (event) {
+
+    $.ajax({
+        method   : 'GET',
+        url      : '/notification/method/',
+        dataType : 'json',
+        success  : function(data, event) {
+
+            var select = [];
+
+            $('#notification_text_id').val(data.text_id);
+
+            ['none', 'email', 'telegram'].forEach(function(item, i, arr) {
+                var selected = '';
+                if (typeof(data.method) !== undefined && data.method == item) {
+                    selected = 'selected';
+                }
+                select.push('<option value="' + item + '" ' + selected + '>' + item + '</option>');
+            });
+
+            $('#notification_method').html(select.join(""));
+        },
+        error: function(request, status, error) {
+
+            var data = JSON.parse(request.responseText);
+
+            if (typeof(data.error) !== undefined) {
+
+                alert(data.error);
+
+                return;
+            } 
+          
+            alert(error);
+        }
+    });
+});
+
 $('#projectForm').on('show.bs.modal', function (event) {
 
     var button = $(event.relatedTarget);

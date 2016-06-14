@@ -55,7 +55,7 @@
 
 <div class="modal fade" id="changeNotificationsSettings" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
-        <form method="post" action="/notifications/update-method/">
+        <form method="post" action="/notification/update-method/">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -64,13 +64,11 @@
                 <div class="modal-body">
                     <div class="input-group">
                         <div class="input-group-btn">
-                        <select class="btn btn-default dropdown-toggle" style="height: 34px" name="method">
+                        <select class="btn btn-default dropdown-toggle" style="height: 34px" name="method" id="notification_method">
                             <option value="none">none</option>
-                            <option value="none">email</option>
-                            <option value="none">telegram</option>
                         </select>
                         </div>
-                        <input type="text" name="identifier" class="form-control">
+                        <input type="text" name="text_id" id="notification_text_id" class="form-control">
                     </div>
                 </div>
                 <div class="modal-footer">

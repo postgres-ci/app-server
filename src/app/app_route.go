@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/postgres-ci/app-server/src/app/controllers"
 	"github.com/postgres-ci/app-server/src/app/controllers/auth"
+	"github.com/postgres-ci/app-server/src/app/controllers/notification"
 	"github.com/postgres-ci/app-server/src/app/controllers/password"
 	"github.com/postgres-ci/app-server/src/app/controllers/project"
 	"github.com/postgres-ci/app-server/src/app/controllers/users"
@@ -17,4 +18,5 @@ func (app *app) route() {
 	project.Route(app.Server)
 	webhooks.Route(app.Server)
 	controllers.Index(app.Server)
+	notification.Route(app.Server)
 }
